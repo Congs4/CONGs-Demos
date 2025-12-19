@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CONGs - Commercial Analytics Case Study Deck</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --congs-navy: #2A3C47;
+            --congs-cream: #EBE7D9;
+            --congs-light: #FFF5D0;
+            --congs-white: #FFFFFF;
+            --positive: #2D6A4F;
+            --negative: #9B2C2C;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        @page {
+            size: 297mm 210mm; /* A4 Landscape */
+            margin: 0;
+        }
+        
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f0f0f0;
+            color: var(--congs-navy);
+            line-height: 1.5;
+        }
+        
+        .slide {
+            width: 297mm;
+            height: 210mm;
+            padding: 15mm 20mm;
+            margin: 0 auto 10mm auto;
+            background: var(--congs-white);
+            position: relative;
+            page-break-after: always;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .slide:last-child {
+            page-break-after: auto;
+        }
+        
+        /* Title Slide */
+        .slide.title {
+            background: var(--congs-navy);
+            color: var(--congs-cream);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 30mm 40mm;
+        }
+        
+        .title .logo {
+            height: 40mm;
+            width: auto;
+            object-fit: contain;
+            margin-bottom: 15mm;
+        }
+        
+        .title .tagline {
+            font-size: 16pt;
+            font-weight: 300;
+            letter-spacing: 3px;
+            opacity: 0.7;
+            margin-bottom: 25mm;
+        }
+        
+        .title h1 {
+            font-size: 36pt;
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 5mm;
+        }
+        
+        .title .subtitle {
+            font-size: 16pt;
+            opacity: 0.9;
+        }
+        
+        .title .footer-info {
+            position: absolute;
+            bottom: 15mm;
+            left: 40mm;
+            font-size: 11pt;
+            opacity: 0.6;
+        }
+        
+        /* Regular Slides */
+        .slide h1 {
+            font-size: 28pt;
+            font-weight: 600;
+            color: var(--congs-navy);
+            margin-bottom: 10mm;
+        }
+        
+        .slide h2 {
+            font-size: 16pt;
+            font-weight: 600;
+            color: var(--congs-navy);
+            margin: 8mm 0 5mm 0;
+        }
+        
+        .slide p {
+            font-size: 14pt;
+            margin-bottom: 5mm;
+            text-align: left;
+        }
+        
+        /* Scorecards */
+        .scorecards {
+            display: flex;
+            gap: 8mm;
+            margin: 8mm 0;
+        }
+        
+        .scorecard {
+            flex: 1;
+            background: var(--congs-cream);
+            padding: 8mm;
+            border-radius: 3mm;
+            text-align: center;
+        }
+        
+        .scorecard-value {
+            font-size: 32pt;
+            font-weight: 700;
+            color: var(--congs-navy);
+        }
+        
+        .scorecard-label {
+            font-size: 10pt;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 2mm;
+            opacity: 0.7;
+        }
+        
+        .scorecard-change {
+            font-size: 12pt;
+            font-weight: 600;
+            margin-top: 2mm;
+        }
+        
+        .positive { color: var(--positive); }
+        .negative { color: var(--negative); }
+        
+        /* Two Column */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15mm;
+        }
+        
+        .three-col {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8mm;
+        }
+        
+        .four-col {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6mm;
+        }
+        
+        /* Highlight Box */
+        .highlight-box {
+            background: var(--congs-cream);
+            padding: 8mm;
+            border-radius: 3mm;
+            margin: 5mm 0;
+        }
+        
+        .highlight-box.navy {
+            background: var(--congs-navy);
+            color: var(--congs-cream);
+        }
+        
+        .highlight-box h3 {
+            font-size: 14pt;
+            margin-bottom: 3mm;
+        }
+        
+        /* Insight Box */
+        .insight-box {
+            background: var(--congs-light);
+            border-left: 4mm solid var(--congs-navy);
+            padding: 6mm 8mm;
+            margin: 5mm 0;
+        }
+        
+        .insight-label {
+            font-size: 10pt;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 2mm;
+        }
+        
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11pt;
+            margin: 5mm 0;
+        }
+        
+        th {
+            background: var(--congs-navy);
+            color: var(--congs-cream);
+            padding: 3mm 4mm;
+            text-align: left;
+            font-weight: 600;
+            font-size: 10pt;
+            text-transform: uppercase;
+        }
+        
+        td {
+            padding: 3mm 4mm;
+            border-bottom: 1px solid var(--congs-cream);
+        }
+        
+        .text-right { text-align: right; }
+        .bold { font-weight: 600; }
+        
+        /* Lists */
+        ul {
+            margin: 3mm 0;
+            padding-left: 8mm;
+            font-size: 13pt;
+        }
+        
+        li {
+            margin-bottom: 3mm;
+        }
+        
+        /* Slide Footer */
+        .slide-footer {
+            position: absolute;
+            bottom: 8mm;
+            left: 20mm;
+            right: 20mm;
+            display: flex;
+            justify-content: space-between;
+            font-size: 9pt;
+            color: var(--congs-navy);
+            opacity: 0.4;
+        }
+        
+        /* Tags */
+        .tag {
+            display: inline-block;
+            padding: 1.5mm 4mm;
+            border-radius: 2mm;
+            font-size: 9pt;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .tag-positive { background: #D4EDDA; color: #155724; }
+        .tag-negative { background: #F8D7DA; color: #721C24; }
+        .tag-neutral { background: var(--congs-cream); color: var(--congs-navy); }
+        
+        /* End Slide */
+        .slide.end {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .end .logo {
+            height: 60mm;
+            width: auto;
+            object-fit: contain;
+            margin-bottom: 10mm;
+        }
+        
+        .end .tagline {
+            font-size: 18pt;
+            font-weight: 300;
+            color: var(--congs-navy);
+            opacity: 0.6;
+            margin-bottom: 15mm;
+        }
+        
+        /* Print */
+        @media print {
+            body { background: white; }
+            .slide { margin: 0; box-shadow: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- SLIDE 1: Title -->
+<div class="slide title">
+    <img src="congs-logo.png" alt="CONGs" class="logo">
+    
+    <h1>Commercial Analytics<br>Case Study</h1>
+    <div class="subtitle">Dental Distribution Company | Greece & Cyprus</div>
+    
+    <div class="footer-info">December 2025 | www.congs.co.uk</div>
+</div>
+
+<!-- SLIDE 2: The Problem -->
+<div class="slide">
+    <h1>The Problem</h1>
+    
+    <div class="two-col">
+        <div>
+            <p style="font-size: 16pt; margin-bottom: 10mm;">Sales were down. Leadership couldn't pinpoint why.</p>
+            
+            <ul style="font-size: 14pt;">
+                <li>Multiple Excel files across suppliers, dealers, channels</li>
+                <li>No unified view of what's driving performance</li>
+                <li>2026 planning decisions needed data clarity</li>
+            </ul>
+            
+            <div class="insight-box" style="margin-top: 10mm;">
+                <div class="insight-label">The Question</div>
+                <p style="margin: 0; font-size: 14pt;">"Is our core business healthy, or is everything declining?"</p>
+            </div>
+        </div>
+        <div>
+            <div class="highlight-box navy" style="height: 100%; display: flex; flex-direction: column; justify-content: center;">
+                <p style="font-size: 24pt; font-weight: 300; margin-bottom: 8mm;">The team was busy.</p>
+                <p style="font-size: 24pt; font-weight: 300;">The numbers weren't moving.</p>
+                <p style="font-size: 14pt; margin-top: 10mm; opacity: 0.8;">Activity that looks like progress but delivers no clarity.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="slide-footer">
+        <span>CONGs | Case Study</span>
+        <span>2</span>
+    </div>
+</div>
+
+<!-- SLIDE 3: What We Found -->
+<div class="slide">
+    <h1 style="margin-bottom: 6mm;">What We Found</h1>
+    
+    <p style="font-size: 11pt; margin-bottom: 3mm; opacity: 0.7;">Net Revenue (Dealer + Non-Dealer) | Jan-Nov YoY</p>
+    <div class="scorecards" style="margin: 4mm 0;">
+        <div class="scorecard" style="padding: 5mm;">
+            <div class="scorecard-value" style="font-size: 26pt;">-5%</div>
+            <div class="scorecard-label" style="font-size: 9pt;">Net Revenue</div>
+            <div class="scorecard-change negative" style="font-size: 10pt;">-193K YoY</div>
+        </div>
+        <div class="scorecard" style="padding: 5mm;">
+            <div class="scorecard-value" style="font-size: 26pt;">-16%</div>
+            <div class="scorecard-label" style="font-size: 9pt;">Volume YoY</div>
+            <div class="scorecard-change negative" style="font-size: 10pt;">487K units</div>
+        </div>
+        <div class="scorecard" style="padding: 5mm;">
+            <div class="scorecard-value" style="font-size: 26pt;">+14%</div>
+            <div class="scorecard-label" style="font-size: 9pt;">Price/Unit</div>
+            <div class="scorecard-change positive" style="font-size: 10pt;">Compensating</div>
+        </div>
+        <div class="scorecard" style="padding: 5mm; background: var(--congs-navy); color: var(--congs-cream);">
+            <div class="scorecard-value" style="font-size: 26pt; color: var(--congs-light);">-50%</div>
+            <div class="scorecard-label" style="font-size: 9pt; color: var(--congs-cream);">Non-Dealer Collapse</div>
+            <div class="scorecard-change" style="font-size: 10pt; color: var(--congs-light);">-243K</div>
+        </div>
+    </div>
+    
+    <div class="highlight-box navy" style="margin: 4mm 0; padding: 5mm 8mm;">
+        <p style="font-size: 13pt; margin: 0;">Volume down 16%, but revenue only down 5%. The business is selling LESS stuff at HIGHER prices. This can work short-term but is NOT sustainable long-term.</p>
+    </div>
+    
+    <p style="font-size: 11pt; margin: 4mm 0 3mm 0; opacity: 0.7;">Product Revenue by Price Tier (tier-classified lines: -3%, -145K)</p>
+    <div class="four-col" style="gap: 4mm;">
+        <div class="highlight-box" style="text-align: center; border-left: 3mm solid var(--negative); padding: 5mm; margin: 0;">
+            <p style="font-size: 9pt; margin-bottom: 1mm;">Budget (0-3)</p>
+            <p style="font-size: 18pt; font-weight: 700; color: var(--negative); margin: 0;">-24%</p>
+            <p style="font-size: 8pt; opacity: 0.7; margin: 0;">61% volume, 6% revenue</p>
+        </div>
+        <div class="highlight-box" style="text-align: center; border-left: 3mm solid var(--positive); padding: 5mm; margin: 0;">
+            <p style="font-size: 9pt; margin-bottom: 1mm;">Standard (3-10)</p>
+            <p style="font-size: 18pt; font-weight: 700; color: var(--positive); margin: 0;">+3%</p>
+            <p style="font-size: 8pt; opacity: 0.7; margin: 0;">Slight growth</p>
+        </div>
+        <div class="highlight-box" style="text-align: center; border-left: 3mm solid var(--positive); padding: 5mm; margin: 0;">
+            <p style="font-size: 9pt; margin-bottom: 1mm;">Premium (10-50)</p>
+            <p style="font-size: 18pt; font-weight: 700; color: var(--positive); margin: 0;">+2%</p>
+            <p style="font-size: 8pt; opacity: 0.7; margin: 0;">46% revenue - GREW</p>
+        </div>
+        <div class="highlight-box" style="text-align: center; border-left: 3mm solid var(--negative); padding: 5mm; margin: 0;">
+            <p style="font-size: 9pt; margin-bottom: 1mm;">High-Value (50+)</p>
+            <p style="font-size: 18pt; font-weight: 700; color: var(--negative); margin: 0;">-9%</p>
+            <p style="font-size: 8pt; opacity: 0.7; margin: 0;">-141K = real concern</p>
+        </div>
+    </div>
+    
+    <div class="slide-footer">
+        <span>CONGs | Case Study</span>
+        <span>3</span>
+    </div>
+</div>
+
+<!-- SLIDE 4: The Key Insight -->
+<div class="slide">
+    <h1>The Key Insight</h1>
+    
+    <div class="two-col">
+        <div>
+            <div class="highlight-box navy" style="padding: 12mm;">
+                <p style="font-size: 18pt; font-weight: 300; margin-bottom: 8mm;">Budget tier = 61% of VOLUME</p>
+                <p style="font-size: 18pt; font-weight: 300; margin-bottom: 8mm;">But only 6% of REVENUE</p>
+                <p style="font-size: 14pt; margin-top: 10mm; border-top: 1px solid rgba(255,255,255,0.3); padding-top: 8mm;">Premium + High-Value = 20% of volume but 81% of revenue. This is where the money is.</p>
+            </div>
+        </div>
+        <div>
+            <h2>Revenue Impact by Tier</h2>
+            <table>
+                <thead>
+                    <tr><th>Tier</th><th class="text-right">Change</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Budget</td><td class="text-right negative">-48K</td></tr>
+                    <tr><td>Standard</td><td class="text-right positive">+6K</td></tr>
+                    <tr><td>Premium</td><td class="text-right positive">+38K</td></tr>
+                    <tr style="background: #FFF5F5;"><td class="bold">High-Value</td><td class="text-right negative bold">-141K</td></tr>
+                    <tr style="background: var(--congs-cream);"><td class="bold">Total</td><td class="text-right negative bold">-145K</td></tr>
+                </tbody>
+            </table>
+            
+            <div class="insight-box" style="margin-top: 5mm;">
+                <div class="insight-label">The Real Concern</div>
+                <p style="margin: 0; font-size: 11pt;">High-Value decline (-141K) is 97% of the total revenue loss. Combined with Non-Dealer collapse, suggests equipment/big-ticket slowdown.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="slide-footer">
+        <span>CONGs | Case Study</span>
+        <span>4</span>
+    </div>
+</div>
+
+<!-- SLIDE 5: Dealer Analysis -->
+<div class="slide">
+    <h1>Dealer Performance</h1>
+    
+    <p>14 dealers across Greece and Cyprus, classified into 3 tiers based on 4-year cumulative sales.</p>
+    
+    <div class="three-col" style="margin: 8mm 0;">
+        <div class="highlight-box" style="border-top: 4mm solid #FFD700;">
+            <h3>Tier 1 - Major</h3>
+            <p style="font-size: 24pt; font-weight: 700; margin: 3mm 0;">43.7%</p>
+            <p style="font-size: 11pt;">of revenue | 3 dealers</p>
+            <p style="font-size: 10pt; margin-top: 3mm;">Dealer 1, Dealer 2, Dealer 3</p>
+        </div>
+        <div class="highlight-box" style="border-top: 4mm solid #C0C0C0;">
+            <h3>Tier 2 - Strong</h3>
+            <p style="font-size: 24pt; font-weight: 700; margin: 3mm 0;">38.4%</p>
+            <p style="font-size: 11pt;">of revenue | 5 dealers</p>
+            <p style="font-size: 10pt; margin-top: 3mm;">Dealer 4, Dealer 5, Dealer 6...</p>
+        </div>
+        <div class="highlight-box" style="border-top: 4mm solid #CD7F32;">
+            <h3>Tier 3 - Developing</h3>
+            <p style="font-size: 24pt; font-weight: 700; margin: 3mm 0;">17.9%</p>
+            <p style="font-size: 11pt;">of revenue | 6 dealers</p>
+            <p style="font-size: 10pt; margin-top: 3mm;">Rising stars: Dealer 10 +5.7%</p>
+        </div>
+    </div>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Dealer</th>
+                <th class="text-right">4-Year Sales</th>
+                <th class="text-right">EUR/Unit</th>
+                <th class="text-right">Sales YoY</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="bold">Dealer 1 (Capital)</td>
+                <td class="text-right">2.4M</td>
+                <td class="text-right bold">10.13</td>
+                <td class="text-right positive">+0.4%</td>
+                <td><span class="tag tag-positive">Stable</span></td>
+            </tr>
+            <tr style="background: #FFF5F5;">
+                <td class="bold">Dealer 5 (Regional)</td>
+                <td class="text-right">1.2M</td>
+                <td class="text-right">4.76</td>
+                <td class="text-right negative">-10.1%</td>
+                <td><span class="tag tag-negative">Attention</span></td>
+            </tr>
+            <tr>
+                <td class="bold">Dealer 10 (Northwest)</td>
+                <td class="text-right">607K</td>
+                <td class="text-right">4.19</td>
+                <td class="text-right positive">+5.7%</td>
+                <td><span class="tag tag-positive">Rising</span></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <div class="slide-footer">
+        <span>CONGs | Case Study</span>
+        <span>5</span>
+    </div>
+</div>
+
+<!-- SLIDE 6: What We Know vs Don't Know -->
+<div class="slide">
+    <h1>What We Know vs What We Don't Know</h1>
+    
+    <div class="two-col">
+        <div>
+            <h2 style="color: var(--positive);">What the Data Tells Us</h2>
+            <ul style="font-size: 12pt;">
+                <li>Sell-in volume dropped 16%</li>
+                <li>Avg transaction value up 21%</li>
+                <li>Dealer channel flat (+1%)</li>
+                <li>Non-dealer collapsed (-50%)</li>
+                <li>Budget tier = 61% volume, 6% revenue</li>
+                <li>Premium tier = 46% revenue, grew +2%</li>
+                <li>High-Value tier = -9% (-141K)</li>
+            </ul>
+        </div>
+        <div>
+            <h2 style="color: var(--negative);">Data Gaps</h2>
+            <ul style="font-size: 12pt;">
+                <li>Sell-through data (dealer to customer)</li>
+                <li>Dealer inventory levels</li>
+                <li>Competitor activity</li>
+                <li>Market contraction vs share loss</li>
+                <li>Root cause of non-dealer collapse</li>
+            </ul>
+            
+            <div class="highlight-box navy" style="margin-top: 5mm;">
+                <p style="font-size: 11pt; margin: 0;"><strong>Recommendation:</strong> Request sell-through data from top 3-5 dealers to close the critical data gap.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="insight-box" style="margin-top: 8mm;">
+        <div class="insight-label">Customer Relationship Risk</div>
+        <p style="margin: 0; font-size: 12pt;">Losing budget tier sales may not hurt revenue today. BUT these everyday purchases keep customers coming back. If they buy consumables elsewhere, they may eventually buy everything elsewhere.</p>
+    </div>
+    
+    <div class="slide-footer">
+        <span>CONGs | Case Study</span>
+        <span>6</span>
+    </div>
+</div>
+
+<!-- SLIDE 7: Actions -->
+<div class="slide">
+    <h1>Recommended Actions</h1>
+    
+    <table style="font-size: 12pt;">
+        <thead>
+            <tr>
+                <th>Priority</th>
+                <th>Action</th>
+                <th>Impact</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><span class="tag tag-negative">Urgent</span></td>
+                <td>Investigate Non-Dealer 50% collapse - which contracts were lost?</td>
+                <td class="bold">243K recovery</td>
+            </tr>
+            <tr>
+                <td><span class="tag tag-negative">Urgent</span></td>
+                <td>Request sell-through data from top dealers</td>
+                <td>Close data gap</td>
+            </tr>
+            <tr>
+                <td><span class="tag tag-negative">Urgent</span></td>
+                <td>Address Dealer 5's -10% decline</td>
+                <td>Tier 2 at risk</td>
+            </tr>
+            <tr>
+                <td><span class="tag tag-neutral">Medium</span></td>
+                <td>Understand High-Value tier -9% decline</td>
+                <td>-141K impact</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <h2>Strategic Questions for the Board</h2>
+    <div class="two-col" style="margin-top: 5mm;">
+        <div class="highlight-box">
+            <ul style="font-size: 11pt; margin: 0;">
+                <li>Is the shift to premium an intentional strategy?</li>
+                <li>Should we focus on Premium growth vs Budget recovery?</li>
+                <li>What caused the Non-Dealer channel collapse?</li>
+            </ul>
+        </div>
+        <div class="highlight-box navy">
+            <p style="font-size: 12pt; margin: 0;"><strong>Key Question:</strong> Is it better to focus on high-margin products where we have pricing power, or recover volume to maintain customer relationships?</p>
+        </div>
+    </div>
+    
+    <div class="slide-footer">
+        <span>CONGs | Case Study</span>
+        <span>7</span>
+    </div>
+</div>
+
+<!-- SLIDE 8: Contact -->
+<div class="slide end">
+    <img src="congs-logo.png" alt="CONGs" class="logo">
+    
+    <div class="highlight-box navy" style="padding: 12mm 25mm; margin: 10mm 0;">
+        <p style="font-size: 24pt; font-weight: 300; margin-bottom: 5mm;">Data In, Decisions Out</p>
+        <p style="font-size: 14pt; margin: 0; opacity: 0.9;">We help SMEs turn messy data into clear revenue actions.</p>
+        <p style="font-size: 12pt; margin-top: 8mm; padding-top: 8mm; border-top: 1px solid rgba(255,255,255,0.3); opacity: 0.8;">From raw Excel exports to board pack + CEO portal in 2 weeks.</p>
+    </div>
+    
+    <div style="margin-top: 8mm;">
+        <p style="font-size: 16pt; margin-bottom: 3mm;"><strong>Olga Sakka</strong></p>
+        <p style="font-size: 14pt;">olga.sakka@congs.co.uk</p>
+        <p style="font-size: 14pt;">www.congs.co.uk</p>
+    </div>
+    
+    <p style="margin-top: 15mm; font-size: 11pt; opacity: 0.5;">No long contracts. No fluff. Just clarity and results.</p>
+    
+    <div class="slide-footer">
+        <span>CONGs | Case Study</span>
+        <span>8</span>
+    </div>
+</div>
+
+</body>
+</html>
