@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XYZ Dental Dealer Sales Analysis</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root { --unicon-red: #FF3333; --unicon-dark: #2E2E2E; --unicon-blue: #00AEEF; --unicon-light: #EFEFEF; --positive: #28a745; --negative: #dc3545; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--unicon-light); color: var(--unicon-dark); line-height: 1.6; }
+        .header { background: var(--unicon-dark); color: white; padding: 30px 40px; display: flex; align-items: center; justify-content: space-between; }
+        .logo { font-size: 32px; font-weight: 700; letter-spacing: 4px; }
+        .logo span { color: var(--unicon-red); }
+        .report-title { font-size: 14px; text-transform: uppercase; letter-spacing: 2px; opacity: 0.8; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 40px; }
+        .section { background: white; border-radius: 8px; padding: 30px; margin-bottom: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .section-title { font-size: 20px; font-weight: 600; color: var(--unicon-dark); margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid var(--unicon-red); display: inline-block; }
+        .scorecards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 30px; }
+        .scorecard { background: white; border-radius: 8px; padding: 20px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border-left: 4px solid var(--unicon-blue); }
+        .scorecard.highlight { border-left-color: var(--unicon-red); }
+        .scorecard-value { font-size: 24px; font-weight: 700; color: var(--unicon-dark); }
+        .scorecard-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #666; margin-top: 5px; }
+        table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        th { background: var(--unicon-dark); color: white; padding: 8px 10px; text-align: left; font-weight: 600; font-size: 10px; text-transform: uppercase; }
+        td { padding: 8px 10px; border-bottom: 1px solid #eee; }
+        tr:hover { background: #f8f9fa; }
+        .text-right { text-align: right; }
+        .positive { color: var(--positive); font-weight: 600; }
+        .negative { color: var(--negative); font-weight: 600; }
+        .chart-container { position: relative; height: 350px; margin: 20px 0; }
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        @media (max-width: 1100px) { .three-col { grid-template-columns: 1fr; } }
+        @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
+        .rank { display: inline-block; width: 24px; height: 24px; background: var(--unicon-blue); color: white; border-radius: 50%; text-align: center; line-height: 24px; font-size: 10px; font-weight: 600; }
+        .rank.gold { background: #FFD700; color: #333; }
+        .rank.silver { background: #C0C0C0; color: #333; }
+        .rank.bronze { background: #CD7F32; color: white; }
+        .tag { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 9px; font-weight: 600; text-transform: uppercase; }
+        .tag-high { background: #d4edda; color: #155724; }
+        .tag-mid { background: #fff3cd; color: #856404; }
+        .tag-volume { background: #cce5ff; color: #004085; }
+        .tag-growing { background: #d4edda; color: #155724; }
+        .tag-stable { background: #fff3cd; color: #856404; }
+        .tag-declining { background: #f8d7da; color: #721c24; }
+        .tier-box { background: #f8f9fa; border-radius: 8px; padding: 15px; }
+        .tier-header { font-weight: 600; font-size: 13px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid; }
+        .tier-1 .tier-header { border-color: #FFD700; }
+        .tier-2 .tier-header { border-color: #C0C0C0; }
+        .tier-3 .tier-header { border-color: #CD7F32; }
+        .tier-total { margin-top: 12px; padding-top: 8px; border-top: 1px solid #ddd; font-weight: 600; font-size: 12px; }
+        .footer { text-align: center; padding: 30px; color: #666; font-size: 12px; }
+        .note { background: #f8f9fa; border-left: 4px solid var(--unicon-blue); padding: 15px 20px; margin: 20px 0; font-size: 13px; }
+        .note.strategic { border-left-color: var(--unicon-red); background: #fff5f5; }
+        .bold { font-weight: 600; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">XYZ<span> </span>Dental</div>
+        <div class="report-title">Dealer Sales Analysis Report | November 2025</div>
+    </div>
+    
+    <div class="container">
+        <!-- Key Metrics Scorecards -->
+        <div class="scorecards">
+            <div class="scorecard highlight">
+                <div class="scorecard-value">14</div>
+                <div class="scorecard-label">Active Dealers</div>
+            </div>
+            <div class="scorecard">
+                <div class="scorecard-value">14.03M</div>
+                <div class="scorecard-label">Total Revenue</div>
+            </div>
+            <div class="scorecard highlight">
+                <div class="scorecard-value">2.36M</div>
+                <div class="scorecard-label">Total Units Sold</div>
+            </div>
+            <div class="scorecard">
+                <div class="scorecard-value positive">+1.4%</div>
+                <div class="scorecard-label">Sales YoY (Jan-Nov)</div>
+            </div>
+            <div class="scorecard">
+                <div class="scorecard-value negative">-16.9%</div>
+                <div class="scorecard-label">Units YoY (Jan-Nov)</div>
+            </div>
+            <div class="scorecard highlight">
+                <div class="scorecard-value positive">+22.0%</div>
+                <div class="scorecard-label">EUR/Unit YoY</div>
+            </div>
+            <div class="scorecard">
+                <div class="scorecard-value">7.12</div>
+                <div class="scorecard-label">Avg EUR/Unit (2025)</div>
+            </div>
+        </div>
+
+        <!-- Time Period Note for CEO -->
+        <div style="text-align: center; margin-bottom: 20px; font-size: 12px; color: #666;">
+            <strong>Data Period:</strong> Total Revenue & Units = Cumulative 2022-2025 | YoY Comparisons = Jan-Nov 2024 vs Jan-Nov 2025 | EUR/Unit = 2025 Average
+        </div>
+
+        <!-- Strategic Insight Banner -->
+        <div class="note strategic">
+            <strong>Strategic Insight:</strong> Units down -16.9% but sales UP +1.4% = selling fewer items at higher prices. Average price per unit up 22% (5.82 to 7.10). This indicates <strong>product mix shift to higher-value items</strong> and/or price increases - healthier margin mix.
+        </div>
+
+        <!-- Overall Sales & Units Performance -->
+        <div class="section">
+            <h2 class="section-title">Dealer Sales & Units Performance (2022-2025)</h2>
+            <div class="two-col">
+                <div>
+                    <h3 style="margin-bottom: 15px; font-size: 14px; color: #666;">Full Year Figures</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Year</th>
+                                <th class="text-right">Sales</th>
+                                <th class="text-right">Units</th>
+                                <th class="text-right">EUR/Unit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td class="bold">2022</td><td class="text-right">3,360,384</td><td class="text-right">563,627</td><td class="text-right">5.96</td></tr>
+                            <tr><td class="bold">2023</td><td class="text-right">3,457,549</td><td class="text-right">632,867</td><td class="text-right">5.46</td></tr>
+                            <tr><td class="bold">2024</td><td class="text-right">3,999,630</td><td class="text-right">716,016</td><td class="text-right">5.59</td></tr>
+                            <tr><td class="bold">2025 (Nov)</td><td class="text-right">3,599,291</td><td class="text-right">506,912</td><td class="text-right bold">7.10</td></tr>
+                        </tbody>
+                    </table>
+                    
+                    <h3 style="margin: 20px 0 15px; font-size: 14px; color: #666;">Jan-Nov Comparable (Updated Dec 8, 2025)</h3>
+                    <table>
+                        <thead>
+                            <tr><th>Year</th><th class="text-right">Sales</th><th class="text-right">Units</th><th class="text-right">EUR/Unit</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>2022</td><td class="text-right">3,063,630</td><td class="text-right">510,873</td><td class="text-right">6.00</td></tr>
+                            <tr><td>2023</td><td class="text-right">3,307,339</td><td class="text-right">585,093</td><td class="text-right">5.65</td></tr>
+                            <tr><td>2024</td><td class="text-right">3,549,046</td><td class="text-right">610,163</td><td class="text-right">5.82</td></tr>
+                            <tr><td class="bold">2025</td><td class="text-right bold">3,599,291</td><td class="text-right bold">506,912</td><td class="text-right bold">7.10</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <div class="chart-container">
+                        <canvas id="salesUnitsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- YoY Growth Analysis -->
+        <div class="section">
+            <h2 class="section-title">Comparable YoY Growth (Jan-Nov)</h2>
+            <div class="two-col">
+                <div>
+                    <table>
+                        <thead>
+                            <tr><th>Period</th><th class="text-right">Sales YoY</th><th class="text-right">Units YoY</th><th class="text-right">Price/Unit YoY</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td class="bold">2022 to 2023</td><td class="text-right positive">+8.0%</td><td class="text-right positive">+14.5%</td><td class="text-right negative">-5.8%</td></tr>
+                            <tr><td class="bold">2023 to 2024</td><td class="text-right positive">+7.3%</td><td class="text-right positive">+4.3%</td><td class="text-right positive">+3.0%</td></tr>
+                            <tr><td class="bold">2024 to 2025</td><td class="text-right positive">+1.4%</td><td class="text-right negative">-16.9%</td><td class="text-right positive">+22.0%</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="note">
+                        <strong>Pattern:</strong> Volume is declining but value per unit is increasing significantly. This trend accelerated in 2025 with the highest EUR/Unit (7.12) in the period.
+                    </div>
+                </div>
+                <div>
+                    <div class="chart-container">
+                        <canvas id="yoyChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dealer Ranking with Units -->
+        <div class="section">
+            <h2 class="section-title">Dealer Performance Ranking (Sales + Units)</h2>
+            <div style="margin-bottom: 15px; font-size: 12px; color: #666;">
+                <strong>Data Period:</strong> Total Sales & Units = Cumulative 2022-2025 | EUR/Unit = 4-Year Average | Sales YoY = Jan-Nov 2024 vs 2025
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Dealer</th>
+                        <th>Region</th>
+                        <th class="text-right">Total Sales</th>
+                        <th class="text-right">Total Units</th>
+                        <th class="text-right">EUR/Unit</th>
+                        <th>Category</th>
+                        <th class="text-right">Sales YoY</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><span class="rank gold">1</span></td><td class="bold">Dealer 1</td><td>Athens</td><td class="text-right">2,444,226</td><td class="text-right">241,389</td><td class="text-right bold">10.13</td><td><span class="tag tag-high">High-Value</span></td><td class="text-right positive">+0.4%</td></tr>
+                    <tr><td><span class="rank silver">2</span></td><td class="bold">Dealer 2</td><td>Volos & Larissa</td><td class="text-right">2,051,575</td><td class="text-right">396,159</td><td class="text-right">5.18</td><td><span class="tag tag-mid">Standard</span></td><td class="text-right negative">-3.7%</td></tr>
+                    <tr><td><span class="rank bronze">3</span></td><td class="bold">Dealer 3</td><td>Patras</td><td class="text-right">1,635,404</td><td class="text-right">296,800</td><td class="text-right">5.51</td><td><span class="tag tag-mid">Standard</span></td><td class="text-right positive">+1.0%</td></tr>
+                    <tr><td><span class="rank">4</span></td><td>Dealer 4</td><td>Chania, Crete</td><td class="text-right">1,340,255</td><td class="text-right">281,699</td><td class="text-right">4.76</td><td><span class="tag tag-volume">Volume</span></td><td class="text-right positive">+4.1%</td></tr>
+                    <tr><td><span class="rank">5</span></td><td>Dealer 5</td><td>Heraklion, Crete</td><td class="text-right">1,169,942</td><td class="text-right">245,855</td><td class="text-right">4.76</td><td><span class="tag tag-volume">Volume</span></td><td class="text-right negative">-10.1%</td></tr>
+                    <tr><td><span class="rank">6</span></td><td>Dealer 6</td><td>Pyrgos</td><td class="text-right">1,028,468</td><td class="text-right">184,130</td><td class="text-right">5.59</td><td><span class="tag tag-mid">Standard</span></td><td class="text-right positive">+2.6%</td></tr>
+                    <tr><td><span class="rank">7</span></td><td>Dealer 7</td><td>Thessaloniki</td><td class="text-right">946,408</td><td class="text-right">85,689</td><td class="text-right bold">11.04</td><td><span class="tag tag-high">High-Value</span></td><td class="text-right negative">-3.5%</td></tr>
+                    <tr><td><span class="rank">8</span></td><td>Dealer 8</td><td>Rhodes</td><td class="text-right">902,220</td><td class="text-right">167,651</td><td class="text-right">5.38</td><td><span class="tag tag-mid">Standard</span></td><td class="text-right negative">-3.3%</td></tr>
+                    <tr><td><span class="rank">9</span></td><td>Dealer 9</td><td>Piraeus</td><td class="text-right">668,710</td><td class="text-right">153,553</td><td class="text-right">4.35</td><td><span class="tag tag-volume">Volume</span></td><td class="text-right negative">-1.3%</td></tr>
+                    <tr><td><span class="rank">10</span></td><td>Dealer 10</td><td>Ioannina</td><td class="text-right">607,425</td><td class="text-right">144,894</td><td class="text-right">4.19</td><td><span class="tag tag-volume">Volume</span></td><td class="text-right positive">+5.7%</td></tr>
+                    <tr><td><span class="rank">11</span></td><td>Dealer 11</td><td>Alexandroupoli</td><td class="text-right">501,195</td><td class="text-right">71,560</td><td class="text-right">7.00</td><td><span class="tag tag-mid">Standard</span></td><td class="text-right negative">-5.7%</td></tr>
+                    <tr><td><span class="rank">12</span></td><td>Dealer 12</td><td>Drama</td><td class="text-right">410,897</td><td class="text-right">55,280</td><td class="text-right">7.43</td><td><span class="tag tag-mid">Standard</span></td><td class="text-right positive">+1.9%</td></tr>
+                    <tr><td><span class="rank">13</span></td><td>Dealer 13</td><td>Cyprus</td><td class="text-right">285,833</td><td class="text-right">24,617</td><td class="text-right bold">11.61</td><td><span class="tag tag-high">High-Value</span></td><td class="text-right negative">-9.7%</td></tr>
+                    <tr><td><span class="rank">14</span></td><td>Dealer 14</td><td>Ptolemaida</td><td class="text-right">35,058</td><td class="text-right">14,146</td><td class="text-right">2.48</td><td><span class="tag tag-volume">Volume</span></td><td class="text-right positive">+46.6%</td></tr>
+                </tbody>
+            </table>
+            <div class="note" style="margin-top: 15px;">
+                <strong>Dealer Categories:</strong> High-Value (>10 EUR/unit): Premium product mix | Standard (5-8 EUR/unit): Balanced mix | Volume (<5 EUR/unit): High-volume consumables
+            </div>
+        </div>
+
+        <!-- YoY by Dealer with Units -->
+        <div class="section">
+            <h2 class="section-title">2024 to 2025 YoY by Dealer (Jan-Nov) - Sales vs Units</h2>
+            <div class="two-col">
+                <div>
+                    <table>
+                        <thead><tr><th>Dealer</th><th class="text-right">Sales YoY</th><th class="text-right">Units YoY</th><th>Trend</th></tr></thead>
+                        <tbody>
+                            <tr><td>Dealer 14</td><td class="text-right positive">+46.6%</td><td class="text-right negative">-69.7%</td><td>Higher value</td></tr>
+                            <tr><td>Dealer 10</td><td class="text-right positive">+5.7%</td><td class="text-right negative">-34.9%</td><td>Higher value</td></tr>
+                            <tr><td>Dealer 4</td><td class="text-right positive">+4.1%</td><td class="text-right negative">-11.5%</td><td>Higher value</td></tr>
+                            <tr><td>Dealer 6</td><td class="text-right positive">+2.6%</td><td class="text-right negative">-9.8%</td><td>Higher value</td></tr>
+                            <tr><td>Dealer 12</td><td class="text-right positive">+1.9%</td><td class="text-right positive">+36.8%</td><td>Lower value</td></tr>
+                            <tr><td>Dealer 3</td><td class="text-right positive">+1.0%</td><td class="text-right negative">-14.7%</td><td>Higher value</td></tr>
+                            <tr><td>Dealer 1</td><td class="text-right positive">+0.4%</td><td class="text-right positive">+7.3%</td><td>Lower value</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <table>
+                        <thead><tr><th>Dealer</th><th class="text-right">Sales YoY</th><th class="text-right">Units YoY</th><th>Trend</th></tr></thead>
+                        <tbody>
+                            <tr><td>Dealer 9</td><td class="text-right negative">-1.3%</td><td class="text-right negative">-9.4%</td><td>Higher value</td></tr>
+                            <tr><td>Dealer 8</td><td class="text-right negative">-3.3%</td><td class="text-right negative">-40.7%</td><td>Much higher value</td></tr>
+                            <tr><td>Dealer 7</td><td class="text-right negative">-3.5%</td><td class="text-right negative">-23.5%</td><td>Higher value</td></tr>
+                            <tr><td>Dealer 2</td><td class="text-right negative">-3.7%</td><td class="text-right negative">-18.4%</td><td>Higher value</td></tr>
+                            <tr><td>Dealer 11</td><td class="text-right negative">-5.7%</td><td class="text-right negative">-7.2%</td><td>Similar value</td></tr>
+                            <tr><td>Dealer 13</td><td class="text-right negative">-9.7%</td><td class="text-right negative">-45.3%</td><td>Much higher value</td></tr>
+                            <tr><td>Dealer 5</td><td class="text-right negative">-10.1%</td><td class="text-right negative">-39.1%</td><td>Much higher value</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="note">
+                <strong>Key Insight:</strong> Most dealers selling fewer units but at higher prices. Only Dealer 12 and Dealer 1 increased volume while maintaining/growing sales.
+            </div>
+            <div class="note" style="margin-top: 10px;">
+                <strong>Understanding the Trend Column:</strong><br>
+                • <strong>Higher value</strong> = Units ↓ more than Sales ↓ (or Sales ↑ while Units ↓) → Selling <em>fewer items at higher prices</em>. EUR/unit increased.<br>
+                • <strong>Much higher value</strong> = Large gap between Sales% and Units% → Significant price increase per item.<br>
+                • <strong>Lower value</strong> = Units ↑ more than Sales ↑ → Selling <em>more items at lower prices</em>. EUR/unit decreased.<br>
+                • <strong>Similar value</strong> = Sales% and Units% moved together → Price per item stayed stable.
+            </div>
+        </div>
+
+        <!-- Tier Analysis with Units -->
+        <div class="section">
+            <h2 class="section-title">Dealer Tier Analysis (With Units)</h2>
+            
+            <!-- Tier Definition Note -->
+            <div class="note" style="margin-bottom: 20px;">
+                <strong>Tier Classification Criteria:</strong> Based on cumulative 4-year sales (2022-2025). 
+                Tier 1 (>€1.5M) = Core strategic partners | Tier 2 (€800K-€1.5M) = Growth potential dealers | Tier 3 (<€800K) = Developing/emerging dealers.
+            </div>
+            
+            <div class="three-col">
+                <div class="tier-box tier-1">
+                    <div class="tier-header">Tier 1 - Major Dealers (>1.5M)</div>
+                    <table>
+                        <thead><tr><th>Dealer</th><th class="text-right">Sales</th><th class="text-right">Units</th><th class="text-right">EUR/Unit</th></tr></thead>
+                        <tbody>
+                            <tr><td>Dealer 1</td><td class="text-right">2,444K</td><td class="text-right">241K</td><td class="text-right">10.13</td></tr>
+                            <tr><td>Dealer 2</td><td class="text-right">2,052K</td><td class="text-right">396K</td><td class="text-right">5.18</td></tr>
+                            <tr><td>Dealer 3</td><td class="text-right">1,635K</td><td class="text-right">297K</td><td class="text-right">5.51</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="tier-total">Sales: 6,131K (43.7%) | Units: 934K (39.5%)</div>
+                    <div style="margin-top: 10px; padding: 10px; background: #fff8e6; border-radius: 4px; font-size: 11px;">
+                        <strong>Tier Profile:</strong> 3 dealers | Avg €6.56/unit<br>
+                        <strong>2025 YoY:</strong> Mixed (-0.8% avg)<br>
+                        <strong>Strategy:</strong> <span style="color: #856404;">Protect & optimize product mix</span>
+                    </div>
+                </div>
+                <div class="tier-box tier-2">
+                    <div class="tier-header">Tier 2 - Strong Dealers (800K-1.5M)</div>
+                    <table>
+                        <thead><tr><th>Dealer</th><th class="text-right">Sales</th><th class="text-right">Units</th><th class="text-right">EUR/Unit</th></tr></thead>
+                        <tbody>
+                            <tr><td>Dealer 4</td><td class="text-right">1,340K</td><td class="text-right">282K</td><td class="text-right">4.76</td></tr>
+                            <tr><td>Dealer 5</td><td class="text-right">1,170K</td><td class="text-right">246K</td><td class="text-right">4.76</td></tr>
+                            <tr><td>Dealer 6</td><td class="text-right">1,028K</td><td class="text-right">184K</td><td class="text-right">5.59</td></tr>
+                            <tr><td>Dealer 7</td><td class="text-right">946K</td><td class="text-right">86K</td><td class="text-right">11.04</td></tr>
+                            <tr><td>Dealer 8</td><td class="text-right">902K</td><td class="text-right">168K</td><td class="text-right">5.38</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="tier-total">Sales: 5,387K (38.4%) | Units: 965K (40.8%)</div>
+                    <div style="margin-top: 10px; padding: 10px; background: #e8f4fd; border-radius: 4px; font-size: 11px;">
+                        <strong>Tier Profile:</strong> 5 dealers | Avg €5.58/unit<br>
+                        <strong>2025 YoY:</strong> Declining (-2.0% avg)<br>
+                        <strong>Strategy:</strong> <span style="color: #004085;">Address Dealer 5 decline; promote Dealer 4 to Tier 1</span>
+                    </div>
+                </div>
+                <div class="tier-box tier-3">
+                    <div class="tier-header">Tier 3 - Developing (<800K)</div>
+                    <table>
+                        <thead><tr><th>Dealer</th><th class="text-right">Sales</th><th class="text-right">Units</th><th class="text-right">EUR/Unit</th></tr></thead>
+                        <tbody>
+                            <tr><td>Dealer 9</td><td class="text-right">669K</td><td class="text-right">154K</td><td class="text-right">4.35</td></tr>
+                            <tr><td>Dealer 10</td><td class="text-right">607K</td><td class="text-right">145K</td><td class="text-right">4.19</td></tr>
+                            <tr><td>Dealer 11</td><td class="text-right">501K</td><td class="text-right">72K</td><td class="text-right">7.00</td></tr>
+                            <tr><td>Dealer 12</td><td class="text-right">411K</td><td class="text-right">55K</td><td class="text-right">7.43</td></tr>
+                            <tr><td>Dealer 13</td><td class="text-right">286K</td><td class="text-right">25K</td><td class="text-right">11.61</td></tr>
+                            <tr><td>Dealer 14</td><td class="text-right">35K</td><td class="text-right">14K</td><td class="text-right">2.48</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="tier-total">Sales: 2,509K (17.9%) | Units: 464K (19.6%)</div>
+                    <div style="margin-top: 10px; padding: 10px; background: #f0f0f0; border-radius: 4px; font-size: 11px;">
+                        <strong>Tier Profile:</strong> 6 dealers | Avg €5.41/unit<br>
+                        <strong>2025 YoY:</strong> Mixed (+6.1% avg, driven by Dealer 14 +46.6%)<br>
+                        <strong>Strategy:</strong> <span style="color: #155724;">Watch Dealer 10 & Dealer 12 as rising stars</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Strategic Summary -->
+            <div class="note strategic" style="margin-top: 20px;">
+                <strong>Tier Strategy Summary:</strong><br>
+                • <strong>Tier 1 (43.7% revenue)</strong>: Highest EUR/unit (€6.56). Focus on retention and premium product expansion. Dealer 1 is the margin leader (€10.13/unit).<br>
+                • <strong>Tier 2 (38.4% revenue)</strong>: Largest volume contributors (40.8% of units). Dealer 7 shows premium potential (€11.04/unit). Address Dealer 5' -10.1% decline urgently.<br>
+                • <strong>Tier 3 (17.9% revenue)</strong>: Growth opportunities. Dealer 13 (Cyprus) has highest EUR/unit (€11.61) - expand geographic reach. Dealer 14 showing explosive growth (+46.6%).
+            </div>
+        </div>
+
+        <!-- Sales vs Units Chart -->
+        <div class="section">
+            <h2 class="section-title">2024-2025 YoY: Sales vs Units by Dealer</h2>
+            <div class="chart-container" style="height: 400px;">
+                <canvas id="salesVsUnitsChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Key Observations -->
+        <div class="section">
+            <h2 class="section-title">Key Observations for CEO</h2>
+            <div class="two-col">
+                <div>
+                    <h3 style="margin-bottom: 15px; font-size: 14px; color: var(--positive);">Strengths</h3>
+                    <ul style="list-style: none; padding: 0; font-size: 13px;">
+                        <li style="padding: 8px 0; border-bottom: 1px solid #eee;">Strong dealer network: 14 dealers covering Greece + Cyprus</li>
+                        <li style="padding: 8px 0; border-bottom: 1px solid #eee;">Top 3 dealers account for 43.7% of revenue</li>
+                        <li style="padding: 8px 0; border-bottom: 1px solid #eee;">2025 showing growth: +1.4% sales increase</li>
+                        <li style="padding: 8px 0;"><strong>Value shift:</strong> Average EUR/unit increased 22%</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 style="margin-bottom: 15px; font-size: 14px; color: var(--negative);">Concerns</h3>
+                    <ul style="list-style: none; padding: 0; font-size: 13px;">
+                        <li style="padding: 8px 0; border-bottom: 1px solid #eee;"><span class="tag tag-declining">Attention</span> Dealer 5: -10.1% sales, -39% units</li>
+                        <li style="padding: 8px 0; border-bottom: 1px solid #eee;"><span class="tag tag-declining">Declining</span> Dealer 13: -9.7% sales, -45% units</li>
+                        <li style="padding: 8px 0;"><strong>Volume decline:</strong> -16.9% units overall - market contraction?</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>XYZ Dental Dealer Sales Analysis | Generated November 2025 | Data Source: DEALER_SALES_MAPPED.xlsx</p>
+    </div>
+
+    <script>
+        // Sales vs Units Trend Chart
+        new Chart(document.getElementById('salesUnitsChart'), {
+            type: 'line',
+            data: {
+                labels: ['2022', '2023', '2024', '2025 (Nov)'],
+                datasets: [{
+                    label: 'Sales (EUR)',
+                    data: [3360384, 3457549, 3999630, 3599291],
+                    borderColor: '#FF3333',
+                    backgroundColor: 'rgba(255, 51, 51, 0.1)',
+                    fill: true,
+                    tension: 0.3,
+                    yAxisID: 'y'
+                }, {
+                    label: 'Units',
+                    data: [563627, 632867, 716016, 450912],
+                    borderColor: '#00AEEF',
+                    backgroundColor: 'transparent',
+                    tension: 0.3,
+                    yAxisID: 'y1'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'bottom' } },
+                scales: {
+                    y: { type: 'linear', position: 'left', ticks: { callback: v => (v/1000000).toFixed(1)+'M' } },
+                    y1: { type: 'linear', position: 'right', grid: { drawOnChartArea: false }, ticks: { callback: v => (v/1000).toFixed(0)+'K' } }
+                }
+            }
+        });
+
+        // YoY Chart
+        new Chart(document.getElementById('yoyChart'), {
+            type: 'bar',
+            data: {
+                labels: ['2022-2023', '2023-2024', '2024-2025'],
+                datasets: [{
+                    label: 'Sales YoY %',
+                    data: [8.0, 7.3, 1.4],
+                    backgroundColor: '#FF3333',
+                    borderRadius: 4
+                }, {
+                    label: 'Units YoY %',
+                    data: [14.5, 4.3, -16.9],
+                    backgroundColor: '#00AEEF',
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'bottom' } },
+                scales: { y: { ticks: { callback: v => v + '%' } } }
+            }
+        });
+
+        // Sales vs Units by Dealer
+        new Chart(document.getElementById('salesVsUnitsChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Dealer 14', 'Dealer 10', 'Dealer 4', 'Dealer 6', 'Dealer 12', 'Dealer 3', 'Dealer 1', 'Dealer 9', 'Dealer 8', 'Dealer 7', 'Dealer 2', 'Dealer 11', 'Dealer 13', 'Dealer 5'],
+                datasets: [{
+                    label: 'Sales YoY %',
+                    data: [46.6, 5.7, 4.1, 2.6, 1.9, 1.0, 0.4, -1.3, -3.3, -3.5, -3.7, -5.7, -9.7, -10.1],
+                    backgroundColor: '#FF3333',
+                    borderRadius: 4
+                }, {
+                    label: 'Units YoY %',
+                    data: [-69.7, -34.9, -11.5, -9.8, 36.8, -14.7, 7.3, -9.4, -40.7, -23.5, -18.4, -7.2, -45.3, -39.1],
+                    backgroundColor: '#00AEEF',
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'bottom' } },
+                scales: { x: { ticks: { callback: v => v + '%' } } }
+            }
+        });
+    </script>
+</body>
+</html>

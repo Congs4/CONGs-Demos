@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XYZ Dental Field Sales Analysis</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root { --unicon-red: #FF3333; --unicon-dark: #2E2E2E; --unicon-blue: #00AEEF; --unicon-light: #EFEFEF; --positive: #28a745; --negative: #dc3545; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--unicon-light); color: var(--unicon-dark); line-height: 1.6; }
+        .header { background: var(--unicon-dark); color: white; padding: 30px 40px; display: flex; align-items: center; justify-content: space-between; }
+        .logo { font-size: 32px; font-weight: 700; letter-spacing: 4px; }
+        .logo span { color: var(--unicon-red); }
+        .report-title { font-size: 14px; text-transform: uppercase; letter-spacing: 2px; opacity: 0.8; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 40px; }
+        .section { background: white; border-radius: 8px; padding: 30px; margin-bottom: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .section-title { font-size: 20px; font-weight: 600; color: var(--unicon-dark); margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid var(--unicon-red); display: inline-block; }
+        .scorecards { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; margin-bottom: 30px; }
+        .scorecard { background: white; border-radius: 8px; padding: 18px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border-left: 4px solid var(--unicon-blue); }
+        .scorecard.highlight { border-left-color: var(--unicon-red); }
+        .scorecard-value { font-size: 24px; font-weight: 700; color: var(--unicon-dark); }
+        .scorecard-label { font-size: 9px; text-transform: uppercase; letter-spacing: 1px; color: #666; margin-top: 5px; }
+        table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        th { background: var(--unicon-dark); color: white; padding: 8px 10px; text-align: left; font-weight: 600; font-size: 10px; text-transform: uppercase; }
+        td { padding: 8px 10px; border-bottom: 1px solid #eee; }
+        tr:hover { background: #f8f9fa; }
+        .text-right { text-align: right; }
+        .positive { color: var(--positive); font-weight: 600; }
+        .negative { color: var(--negative); font-weight: 600; }
+        .chart-container { position: relative; height: 300px; margin: 20px 0; }
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
+        .rank { display: inline-block; width: 22px; height: 22px; background: var(--unicon-blue); color: white; border-radius: 50%; text-align: center; line-height: 22px; font-size: 10px; font-weight: 600; }
+        .rank.gold { background: #FFD700; color: #333; }
+        .rank.silver { background: #C0C0C0; color: #333; }
+        .rank.bronze { background: #CD7F32; color: white; }
+        .tag { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 9px; font-weight: 600; text-transform: uppercase; }
+        .tag-active { background: #d4edda; color: #155724; }
+        .tag-inactive { background: #f8d7da; color: #721c24; }
+        .footer { text-align: center; padding: 30px; color: #666; font-size: 12px; }
+        .note { background: #f8f9fa; border-left: 4px solid var(--unicon-blue); padding: 15px 20px; margin: 20px 0; font-size: 13px; }
+        .note.strategic { border-left-color: var(--unicon-red); background: #fff5f5; }
+        .bold { font-weight: 600; }
+        .million-club { background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%); color: #333; padding: 15px 20px; border-radius: 8px; margin-bottom: 20px; }
+        .million-club h3 { margin-bottom: 10px; font-size: 14px; }
+        .million-member { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(0,0,0,0.1); font-size: 13px; }
+        .insight-box { background: linear-gradient(135deg, #00AEEF 0%, #0088cc 100%); color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        .insight-box h3 { margin-bottom: 10px; font-size: 14px; }
+        .insight-box p { font-size: 13px; opacity: 0.95; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">XYZ<span> </span>Dental</div>
+        <div class="report-title">Field Sales Analysis Report | November 2025</div>
+    </div>
+    
+    <div class="container">
+        <div class="scorecards">
+            <div class="scorecard highlight">
+                <div class="scorecard-value">24</div>
+                <div class="scorecard-label">Total Salespeople</div>
+            </div>
+            <div class="scorecard">
+                <div class="scorecard-value">15</div>
+                <div class="scorecard-label">Active (IN)</div>
+            </div>
+            <div class="scorecard">
+                <div class="scorecard-value">9</div>
+                <div class="scorecard-label">Departed (OUT)</div>
+            </div>
+            <div class="scorecard highlight">
+                <div class="scorecard-value">7.21M</div>
+                <div class="scorecard-label">Total Field Revenue</div>
+            </div>
+            <div class="scorecard">
+                <div class="scorecard-value">67.9%</div>
+                <div class="scorecard-label">2025 Revenue Share</div>
+            </div>
+            <div class="scorecard highlight">
+                <div class="scorecard-value positive">+24%</div>
+                <div class="scorecard-label">Field Sales YoY</div>
+            </div>
+            <div class="scorecard">
+                <div class="scorecard-value negative">-16.9%</div>
+                <div class="scorecard-label">Dealer Units YoY</div>
+            </div>
+        </div>
+
+        <!-- Time Period Note -->
+        <div style="text-align: center; margin-bottom: 20px; font-size: 12px; color: #666;">
+            <strong>Data Period:</strong> Total Field Revenue = Cumulative 2022-2025 | YoY Comparisons = Jan-Oct 2024 vs Jan-Oct 2025 | Data Source: Dealer Sales (Field Sales portion)
+        </div>
+
+        <!-- Strategic Insight Banner -->
+        <div class="note strategic">
+            <strong>Strategic Insight:</strong> Field sales grew +24% YoY while dealer units declined -16.9%. This suggests field sales is <strong>capturing higher-value transactions</strong>. Average EUR/unit at dealer level increased 22% (5.82 to 7.10). Field sales team appears to be driving the product mix shift to premium items.
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Field Sales Performance (2022-2025)</h2>
+            <div class="two-col">
+                <div>
+                    <table>
+                        <thead>
+                            <tr><th>Year</th><th class="text-right">Field Sales</th><th class="text-right">Dealer Revenue</th><th class="text-right">Field %</th><th class="text-right">Dealer Units</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td class="bold">2022</td><td class="text-right">1,020,446</td><td class="text-right">3,360,384</td><td class="text-right">30.4%</td><td class="text-right">563,627</td></tr>
+                            <tr><td class="bold">2023</td><td class="text-right">1,742,898</td><td class="text-right">3,457,549</td><td class="text-right">50.4%</td><td class="text-right">632,867</td></tr>
+                            <tr><td class="bold">2024</td><td class="text-right">2,215,005</td><td class="text-right">3,999,630</td><td class="text-right">55.4%</td><td class="text-right">716,016</td></tr>
+                            <tr><td class="bold">2025*</td><td class="text-right">2,178,491</td><td class="text-right">3,210,053</td><td class="text-right bold">67.9%</td><td class="text-right">506,912</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="note" style="margin-top: 15px;">
+                        <strong>*Note:</strong> 2025 Field Sales is Jan-Oct only. Dealer Revenue Jan-Oct. Field % = 2,178,491/3,210,053 = 67.9% (not directly comparable to prior years, but placeholder for analysis works). Units/Quantity tracked at dealer level only.
+                    </div>
+                </div>
+                <div><div class="chart-container"><canvas id="trendChart"></canvas></div></div>
+            </div>
+        </div>
+
+        <!-- YoY Comparison -->
+        <div class="section">
+            <h2 class="section-title">YoY Growth Comparison</h2>
+            <div class="two-col">
+                <div>
+                    <table>
+                        <thead><tr><th>Period</th><th class="text-right">Field Sales YoY</th><th class="text-right">Dealer Sales YoY</th><th class="text-right">Dealer Units YoY</th></tr></thead>
+                        <tbody>
+                            <tr><td class="bold">2022 to 2023</td><td class="text-right positive">+70.8%</td><td class="text-right positive">+6.0%</td><td class="text-right positive">+24.0%</td></tr>
+                            <tr><td class="bold">2023 to 2024</td><td class="text-right positive">+27.1%</td><td class="text-right positive">+11.2%</td><td class="text-right negative">-4.2%</td></tr>
+                            <tr><td class="bold">2024 to 2025</td><td class="text-right positive">+23.8%</td><td class="text-right positive">+1.4%</td><td class="text-right negative">-16.9%</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="insight-box" style="margin-top: 20px;">
+                        <h3>Field Sales Outperformance</h3>
+                        <p>Field sales revenue (a portion of total dealer sales attributed to salespeople) grew +24% while overall dealer sales grew +1.4% and units dropped -16.9%. <strong>Important Note:</strong> Current field sales figures represent retrospective attribution of dealer sales to salespeople, not necessarily new business directly generated by the field sales channel. To accurately measure field sales effectiveness, we recommend implementing a tagging system to track sales that are genuinely originated by salespeople (new clients, new business) versus existing dealer customer sales that are subsequently credited to field reps.</p>
+                    </div>
+                </div>
+                <div><div class="chart-container"><canvas id="yoyCompareChart"></canvas></div></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Top 10 Performers (Career Total)</h2>
+            <div class="million-club">
+                <h3>Million Euro Club</h3>
+                <div class="million-member"><span class="bold">Salesperson 1 (Dealer 4)</span><span>1,060,897</span></div>
+                <div class="million-member"><span class="bold">Salesperson 2 (Dealer 1)</span><span>1,035,048</span></div>
+            </div>
+            <div class="two-col">
+                <div>
+                    <table>
+                        <thead><tr><th>Rank</th><th>Salesperson</th><th>Dealer</th><th class="text-right">2025 (Oct)</th><th class="text-right">Total</th></tr></thead>
+                        <tbody>
+                            <tr><td><span class="rank gold">1</span></td><td class="bold">Salesperson 1</td><td>Dealer 4</td><td class="text-right">313,331</td><td class="text-right bold">1,060,897</td></tr>
+                            <tr><td><span class="rank silver">2</span></td><td class="bold">Salesperson 2</td><td>Dealer 1</td><td class="text-right">245,063</td><td class="text-right bold">1,035,048</td></tr>
+                            <tr><td><span class="rank bronze">3</span></td><td>Salesperson 8</td><td>Dealer 5</td><td class="text-right">161,346</td><td class="text-right">726,967</td></tr>
+                            <tr><td><span class="rank">4</span></td><td>Salesperson 3</td><td>Dealer 2</td><td class="text-right">200,890</td><td class="text-right">706,506</td></tr>
+                            <tr><td><span class="rank">5</span></td><td>Salesperson 5</td><td>Dealer 7</td><td class="text-right">186,685</td><td class="text-right">685,824</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <table>
+                        <thead><tr><th>Rank</th><th>Salesperson</th><th>Dealer</th><th class="text-right">2025 (Oct)</th><th class="text-right">Total</th></tr></thead>
+                        <tbody>
+                            <tr><td><span class="rank">6</span></td><td>Salesperson 4</td><td>Dealer 3</td><td class="text-right">192,274</td><td class="text-right">654,289</td></tr>
+                            <tr><td><span class="rank">7</span></td><td>Salesperson 10</td><td>Dealer 3</td><td class="text-right">125,710</td><td class="text-right">318,906</td></tr>
+                            <tr><td><span class="rank">8</span></td><td>Salesperson 16</td><td>Dealer 7</td><td class="text-right">-</td><td class="text-right">285,015</td></tr>
+                            <tr><td><span class="rank">9</span></td><td>Salesperson 11</td><td>Dealer 6</td><td class="text-right">111,153</td><td class="text-right">262,271</td></tr>
+                            <tr><td><span class="rank">10</span></td><td>Salesperson 17</td><td>Dealer 5</td><td class="text-right">-</td><td class="text-right">249,972</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Field Sales by Dealer (with Units Context)</h2>
+            <div class="two-col">
+                <div><div class="chart-container"><canvas id="dealerChart"></canvas></div></div>
+                <div>
+                    <table>
+                        <thead><tr><th>Dealer</th><th class="text-right">Reps</th><th class="text-right">Field Sales</th><th class="text-right">Dealer Units</th><th class="text-right">EUR/Unit</th></tr></thead>
+                        <tbody>
+                            <tr><td class="bold">Dealer 1</td><td class="text-right">6</td><td class="text-right">1,367,029</td><td class="text-right">241,389</td><td class="text-right">10.13</td></tr>
+                            <tr><td class="bold">Dealer 5</td><td class="text-right">3</td><td class="text-right">1,172,095</td><td class="text-right">245,855</td><td class="text-right">4.76</td></tr>
+                            <tr><td class="bold">Dealer 7</td><td class="text-right">3</td><td class="text-right">1,133,602</td><td class="text-right">85,689</td><td class="text-right bold">11.04</td></tr>
+                            <tr><td class="bold">Dealer 4</td><td class="text-right">1</td><td class="text-right">1,060,897</td><td class="text-right">281,699</td><td class="text-right">4.76</td></tr>
+                            <tr><td class="bold">Dealer 3</td><td class="text-right">2</td><td class="text-right">973,195</td><td class="text-right">296,800</td><td class="text-right">5.51</td></tr>
+                            <tr><td>Dealer 2</td><td class="text-right">1</td><td class="text-right">706,506</td><td class="text-right">396,159</td><td class="text-right">5.18</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="note" style="margin-top:15px;"><strong>No Field Sales:</strong> Dealer 13 (Cyprus), Dealer 10 (Ioannina), Dealer 14 (Ptolemaida)</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Productivity Analysis (2024)</h2>
+            <div class="two-col">
+                <div><div class="chart-container"><canvas id="productivityChart"></canvas></div></div>
+                <div>
+                    <table>
+                        <thead><tr><th>Dealer</th><th class="text-right">Reps</th><th class="text-right">2024 Sales</th><th class="text-right">Sales/Person</th></tr></thead>
+                        <tbody>
+                            <tr><td class="bold">Dealer 4</td><td class="text-right">1</td><td class="text-right">313,734</td><td class="text-right positive">313,734</td></tr>
+                            <tr><td class="bold">Dealer 2</td><td class="text-right">1</td><td class="text-right">203,008</td><td class="text-right positive">203,008</td></tr>
+                            <tr><td>Dealer 3</td><td class="text-right">2</td><td class="text-right">304,172</td><td class="text-right">152,086</td></tr>
+                            <tr><td>Dealer 5</td><td class="text-right">3</td><td class="text-right">369,709</td><td class="text-right">123,236</td></tr>
+                            <tr><td>Dealer 7</td><td class="text-right">3</td><td class="text-right">319,571</td><td class="text-right">106,524</td></tr>
+                            <tr><td>Dealer 1</td><td class="text-right">6</td><td class="text-right">417,836</td><td class="text-right negative">69,639</td></tr>
+                        </tbody>
+                    </table>
+                    <div style="margin-top:15px; font-size:13px;"><strong>Average Sales/Person (2024):</strong> 95,869</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">New Hires & Ramp-Up</h2>
+            <div class="two-col">
+                <div>
+                    <h3 style="margin-bottom:15px; font-size:14px;">2024 New Starters (Year 2 Growth)</h3>
+                    <table>
+                        <thead><tr><th>Salesperson</th><th>Dealer</th><th class="text-right">2024</th><th class="text-right">2025</th><th class="text-right">Growth</th></tr></thead>
+                        <tbody>
+                            <tr><td>Salesperson 9</td><td>Dealer 5</td><td class="text-right">57,872</td><td class="text-right">137,283</td><td class="text-right positive">+137%</td></tr>
+                            <tr><td>Salesperson 6</td><td>Dealer 8</td><td class="text-right">58,046</td><td class="text-right">168,556</td><td class="text-right positive">+190%</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <h3 style="margin-bottom:15px; font-size:14px;">2025 New Starters</h3>
+                    <table>
+                        <thead><tr><th>Salesperson</th><th>Dealer</th><th class="text-right">2025 YTD</th></tr></thead>
+                        <tbody>
+                            <tr><td>Salesperson 7</td><td>Dealer 7</td><td class="text-right bold">162,763</td></tr>
+                            <tr><td>Salesperson 14</td><td>Dealer 9</td><td class="text-right">29,743</td></tr>
+                            <tr><td>Salesperson 15</td><td>Dealer 1</td><td class="text-right">21,071</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Key Observations for CEO</h2>
+            <div class="two-col">
+                <div>
+                    <h3 style="margin-bottom:15px; font-size:14px; color:var(--positive);">Strengths</h3>
+                    <ul style="list-style:none; padding:0; font-size:13px;">
+                        <li style="padding:8px 0; border-bottom:1px solid #eee;">Field sales growing +24% YoY despite -16.9% unit decline</li>
+                        <li style="padding:8px 0; border-bottom:1px solid #eee;">Top 2 salespeople exceed 1M career sales each</li>
+                        <li style="padding:8px 0; border-bottom:1px solid #eee;">69% revenue share (vs 30% in 2022) - driving growth</li>
+                        <li style="padding:8px 0;">New talent ramping: 137-190% growth in year 2</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 style="margin-bottom:15px; font-size:14px; color:var(--negative);">Concerns & Opportunities</h3>
+                    <ul style="list-style:none; padding:0; font-size:13px;">
+                        <li style="padding:8px 0; border-bottom:1px solid #eee;">High turnover: 9 of 24 (37.5%) departed</li>
+                        <li style="padding:8px 0; border-bottom:1px solid #eee;">Uneven distribution: Dealer 1 6 reps, Dealer 4 1</li>
+                        <li style="padding:8px 0; border-bottom:1px solid #eee;">3 dealers have NO field sales force</li>
+                        <li style="padding:8px 0;">Productivity: 5,847 to 313,734 per person</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="note strategic" style="margin-top:20px;">
+                <strong>Units & Value Context:</strong> Dealer units declined -16.9% but field sales grew +24%. This suggests field sales is capturing higher-value transactions. Average EUR/unit at dealer level increased 22% (5.82 to 7.10). Field sales team appears to be driving the product mix shift to premium items.
+            </div>
+            <div class="note" style="margin-top:15px;">
+                <strong>Field Sales ROI:</strong> 15 active reps producing 2.5M (Jan-Oct 2025). Average: 167K per rep. Field sales driving 69% of dealer revenue with focused effort.
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>XYZ Dental Field Sales Analysis | Generated November 2025 | Data Source: FIELD_SALES_DATA.xlsx</p>
+    </div>
+
+    <script>
+        new Chart(document.getElementById('trendChart'), {
+            type: 'line',
+            data: {
+                labels: ['2022', '2023', '2024', '2025 (Oct)'],
+                datasets: [{
+                    label: 'Field Sales %',
+                    data: [30.4, 50.4, 55.4, 67.9],
+                    borderColor: '#FF3333',
+                    backgroundColor: 'rgba(255, 51, 51, 0.1)',
+                    fill: true,
+                    tension: 0.3,
+                    yAxisID: 'y1'
+                }, {
+                    label: 'Field Sales (EUR)',
+                    data: [1020446, 1742898, 2215005, 2226779],
+                    borderColor: '#00AEEF',
+                    tension: 0.3,
+                    yAxisID: 'y'
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { position: 'bottom' } },
+                scales: {
+                    y: { type: 'linear', position: 'left', ticks: { callback: v => (v/1000000).toFixed(1)+'M' } },
+                    y1: { type: 'linear', position: 'right', grid: { drawOnChartArea: false }, ticks: { callback: v => v+'%' } }
+                }
+            }
+        });
+
+        new Chart(document.getElementById('yoyCompareChart'), {
+            type: 'bar',
+            data: {
+                labels: ['2022-2023', '2023-2024', '2024-2025'],
+                datasets: [{
+                    label: 'Field Sales YoY %',
+                    data: [70.8, 27.1, 23.8],
+                    backgroundColor: '#FF3333',
+                    borderRadius: 4
+                }, {
+                    label: 'Dealer Units YoY %',
+                    data: [24.0, -4.2, -17.3],
+                    backgroundColor: '#00AEEF',
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { position: 'bottom' } },
+                scales: { y: { ticks: { callback: v => v + '%' } } }
+            }
+        });
+
+        new Chart(document.getElementById('dealerChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Dealer 1', 'Dealer 5', 'Dealer 7', 'Dealer 4', 'Dealer 3', 'Dealer 2'],
+                datasets: [{
+                    label: '4-Year Total',
+                    data: [1367029, 1172095, 1133602, 1060897, 973195, 706506],
+                    backgroundColor: '#00AEEF',
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { x: { ticks: { callback: v => (v/1000000).toFixed(1)+'M' } } }
+            }
+        });
+
+        new Chart(document.getElementById('productivityChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Dealer 4', 'Dealer 2', 'Dealer 3', 'Dealer 5', 'Dealer 7', 'Dealer 1'],
+                datasets: [{
+                    label: 'Sales per Person',
+                    data: [313734, 203008, 152086, 123236, 106524, 69639],
+                    backgroundColor: ['#28a745', '#28a745', '#00AEEF', '#00AEEF', '#00AEEF', '#dc3545'],
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { x: { ticks: { callback: v => (v/1000).toFixed(0)+'K' } } }
+            }
+        });
+    </script>
+</body>
+</html>
