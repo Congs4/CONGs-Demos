@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CONGs - Commercial Analytics Case Study</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --congs-navy: #2A3C47;
+            --congs-cream: #EBE7D9;
+            --congs-light: #FFF5D0;
+            --congs-white: #FFFFFF;
+            --congs-text: #2A3C47;
+            --positive: #2D6A4F;
+            --negative: #9B2C2C;
+            --accent: #8B4513;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        @page {
+            size: A4;
+            margin: 0;
+        }
+        
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--congs-white);
+            color: var(--congs-text);
+            line-height: 1.6;
+            font-size: 11pt;
+        }
+        
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 20mm;
+            margin: 0 auto;
+            background: var(--congs-white);
+            page-break-after: always;
+            position: relative;
+        }
+        
+        .page:last-child {
+            page-break-after: auto;
+        }
+        
+        /* Cover Page */
+        .cover {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            background: var(--congs-navy);
+            color: var(--congs-cream);
+            padding: 40mm;
+        }
+        
+        .cover-logo {
+            height: 25mm;
+            width: auto;
+            margin-bottom: 10mm;
+        }
+        
+        .cover-tagline {
+            font-size: 14pt;
+            font-weight: 300;
+            letter-spacing: 2px;
+            opacity: 0.8;
+            margin-bottom: 30mm;
+        }
+        
+        .cover-title {
+            font-size: 28pt;
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 8mm;
+        }
+        
+        .cover-subtitle {
+            font-size: 14pt;
+            font-weight: 400;
+            opacity: 0.9;
+            margin-bottom: 20mm;
+        }
+        
+        .cover-client {
+            font-size: 11pt;
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            opacity: 0.7;
+        }
+        
+        .cover-date {
+            position: absolute;
+            bottom: 20mm;
+            left: 40mm;
+            font-size: 10pt;
+            opacity: 0.6;
+        }
+        
+        /* Section Headers */
+        h1 {
+            font-size: 20pt;
+            font-weight: 600;
+            color: var(--congs-navy);
+            margin-bottom: 6mm;
+            padding-bottom: 3mm;
+            border-bottom: 2px solid var(--congs-cream);
+        }
+        
+        h2 {
+            font-size: 14pt;
+            font-weight: 600;
+            color: var(--congs-navy);
+            margin: 6mm 0 4mm 0;
+        }
+        
+        h3 {
+            font-size: 11pt;
+            font-weight: 600;
+            color: var(--congs-navy);
+            margin: 4mm 0 2mm 0;
+        }
+        
+        p {
+            margin-bottom: 3mm;
+            text-align: left;
+        }
+        
+        /* Highlight Box */
+        .highlight-box {
+            background: var(--congs-cream);
+            padding: 5mm;
+            border-radius: 2mm;
+            margin: 5mm 0;
+        }
+        
+        .highlight-box.navy {
+            background: var(--congs-navy);
+            color: var(--congs-cream);
+        }
+        
+        /* Scorecards */
+        .scorecards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 4mm;
+            margin: 5mm 0;
+        }
+        
+        .scorecard {
+            background: var(--congs-cream);
+            padding: 4mm;
+            border-radius: 2mm;
+            text-align: center;
+        }
+        
+        .scorecard-value {
+            font-size: 18pt;
+            font-weight: 700;
+            color: var(--congs-navy);
+        }
+        
+        .scorecard-label {
+            font-size: 8pt;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--congs-navy);
+            opacity: 0.7;
+            margin-top: 1mm;
+        }
+        
+        .scorecard-change {
+            font-size: 9pt;
+            font-weight: 600;
+            margin-top: 1mm;
+        }
+        
+        .positive { color: var(--positive); }
+        .negative { color: var(--negative); }
+        
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 9pt;
+            margin: 4mm 0;
+        }
+        
+        th {
+            background: var(--congs-navy);
+            color: var(--congs-cream);
+            padding: 2.5mm 3mm;
+            text-align: left;
+            font-weight: 600;
+            font-size: 8pt;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        td {
+            padding: 2.5mm 3mm;
+            border-bottom: 1px solid var(--congs-cream);
+        }
+        
+        .text-right { text-align: right; }
+        .bold { font-weight: 600; }
+        
+        /* Two Column Layout */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6mm;
+        }
+        
+        .three-col {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4mm;
+        }
+        
+        .four-col {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 3mm;
+        }
+        
+        /* Insight Box */
+        .insight-box {
+            background: var(--congs-light);
+            border-left: 3px solid var(--congs-navy);
+            padding: 4mm;
+            margin: 4mm 0;
+        }
+        
+        .insight-label {
+            font-size: 8pt;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--congs-navy);
+            margin-bottom: 2mm;
+        }
+        
+        /* Action Box */
+        .action-box {
+            background: var(--congs-navy);
+            color: var(--congs-cream);
+            padding: 4mm;
+            border-radius: 2mm;
+            margin: 3mm 0;
+        }
+        
+        .action-label {
+            font-size: 8pt;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.8;
+            margin-bottom: 1mm;
+        }
+        
+        /* Lists */
+        ul {
+            margin: 3mm 0 3mm 5mm;
+            padding-left: 0;
+        }
+        
+        li {
+            margin-bottom: 2mm;
+            padding-left: 2mm;
+        }
+        
+        /* Footer */
+        .page-footer {
+            position: absolute;
+            bottom: 10mm;
+            left: 20mm;
+            right: 20mm;
+            display: flex;
+            justify-content: space-between;
+            font-size: 8pt;
+            color: var(--congs-navy);
+            opacity: 0.5;
+            border-top: 1px solid var(--congs-cream);
+            padding-top: 3mm;
+        }
+        
+        /* Tags */
+        .tag {
+            display: inline-block;
+            padding: 1mm 2.5mm;
+            border-radius: 1mm;
+            font-size: 7pt;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        
+        .tag-positive { background: #D4EDDA; color: #155724; }
+        .tag-negative { background: #F8D7DA; color: #721C24; }
+        .tag-neutral { background: var(--congs-cream); color: var(--congs-navy); }
+        
+        /* Tier Boxes */
+        .tier-box {
+            background: var(--congs-white);
+            border: 1px solid var(--congs-cream);
+            border-radius: 2mm;
+            padding: 3mm;
+        }
+        
+        .tier-header {
+            font-size: 9pt;
+            font-weight: 600;
+            padding-bottom: 2mm;
+            margin-bottom: 2mm;
+            border-bottom: 2px solid;
+        }
+        
+        .tier-1 .tier-header { border-color: #FFD700; }
+        .tier-2 .tier-header { border-color: #C0C0C0; }
+        .tier-3 .tier-header { border-color: #CD7F32; }
+        
+        /* Print Optimization */
+        @media print {
+            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .page { margin: 0; box-shadow: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- PAGE 1: Cover -->
+<div class="page cover">
+    <img src="congs-logo.png" alt="CONGs" class="cover-logo">
+    
+    <div class="cover-title">Commercial Analytics<br>Case Study</div>
+    <div class="cover-subtitle">Data In, Decisions Out</div>
+    
+    <div class="cover-client">Client: Dental Distribution Company | Greece & Cyprus</div>
+    
+    <div class="cover-date">December 2025 | www.congs.co.uk</div>
+</div>
+
+<!-- PAGE 2: Executive Summary -->
+<div class="page">
+    <h1>Executive Summary</h1>
+    
+    <p>A dental equipment and consumables distributor operating across Greece and Cyprus through a network of 14 dealers. Leadership needed clarity on commercial performance to inform 2026 planning decisions.</p>
+    
+    <h2>The Challenge</h2>
+    <p>Leadership had access to multiple Excel files across suppliers, dealers, and direct sales channels but lacked a unified view of performance drivers. Key questions remained unanswered: Why were sales declining? Which channels were healthy? Where should they focus for 2026?</p>
+    
+    <h2>What We Built</h2>
+    <div class="scorecards">
+        <div class="scorecard">
+            <div class="scorecard-value">5</div>
+            <div class="scorecard-label">Interactive Reports</div>
+        </div>
+        <div class="scorecard">
+            <div class="scorecard-value">14</div>
+            <div class="scorecard-label">Dealers Analyzed</div>
+        </div>
+        <div class="scorecard">
+            <div class="scorecard-value">4</div>
+            <div class="scorecard-label">Years of Data</div>
+        </div>
+        <div class="scorecard">
+            <div class="scorecard-value">179K</div>
+            <div class="scorecard-label">Transactions</div>
+        </div>
+    </div>
+    
+    <h2>Key Deliverables</h2>
+    <ul>
+        <li><strong>Executive Summary Dashboard</strong> - CEO-level KPIs with strategic insights</li>
+        <li><strong>Dealer Performance Analysis</strong> - Tier classification, YoY trends, regional breakdown</li>
+        <li><strong>Supplier Analysis</strong> - Channel mix, price-point segmentation, volume vs value</li>
+        <li><strong>Price Tier Analysis</strong> - Revenue contribution by product category</li>
+        <li><strong>Board Strategy Summary</strong> - What we know vs what we don't know</li>
+    </ul>
+    
+    <h2>The Critical Finding</h2>
+    <div class="highlight-box navy">
+        <p style="font-size: 12pt; margin: 0;"><strong>Volume down 16%, but revenue only down 5%.</strong> The volume collapse happened in Budget tier products (61% of volume but only 6% of revenue). The Premium tier - which drives 46% of revenue - actually GREW by 2%. The real concern is the High-Value tier decline (-9%, -141K).</p>
+    </div>
+    
+    <div class="page-footer">
+        <span>CONGs | Commercial Analytics Case Study</span>
+        <span>Page 2</span>
+    </div>
+</div>
+
+<!-- PAGE 3: The Situation -->
+<div class="page">
+    <h1>The Situation: What the Data Revealed</h1>
+    
+    <h2>Headline Numbers (Jan-Nov 2025 vs 2024)</h2>
+    <div class="scorecards">
+        <div class="scorecard">
+            <div class="scorecard-value">3.84M</div>
+            <div class="scorecard-label">2025 Revenue (YTD)</div>
+            <div class="scorecard-change negative">-5% vs 2024</div>
+        </div>
+        <div class="scorecard">
+            <div class="scorecard-value">487K</div>
+            <div class="scorecard-label">Units Sold</div>
+            <div class="scorecard-change negative">-16% vs 2024</div>
+        </div>
+        <div class="scorecard">
+            <div class="scorecard-value">7.88</div>
+            <div class="scorecard-label">Avg Price/Unit</div>
+            <div class="scorecard-change positive">+14% vs 2024</div>
+        </div>
+        <div class="scorecard">
+            <div class="scorecard-value">-50%</div>
+            <div class="scorecard-label">Non-Dealer Collapse</div>
+            <div class="scorecard-change negative">243K drop</div>
+        </div>
+    </div>
+    
+    <h2>Net Revenue by Channel (Dealer + Non-Dealer)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Channel</th>
+                <th class="text-right">2024</th>
+                <th class="text-right">2025</th>
+                <th class="text-right">Change</th>
+                <th>Assessment</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="bold">Dealer Channel (94%)</td>
+                <td class="text-right">3,549,046</td>
+                <td class="text-right">3,599,291</td>
+                <td class="text-right positive">+1%</td>
+                <td><span class="tag tag-neutral">Flat</span></td>
+            </tr>
+            <tr>
+                <td class="bold">Non-Dealer Channel (6%)</td>
+                <td class="text-right">485,136</td>
+                <td class="text-right">241,574</td>
+                <td class="text-right negative">-50%</td>
+                <td><span class="tag tag-negative">Collapsed</span></td>
+            </tr>
+            <tr style="background: var(--congs-cream);">
+                <td class="bold">NET REVENUE</td>
+                <td class="text-right bold">4,034,182</td>
+                <td class="text-right bold">3,840,865</td>
+                <td class="text-right negative">-5% (-193K)</td>
+                <td><span class="tag tag-negative">Declining</span></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <h2>Product Revenue by Price Tier (Tier-Classified Lines)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Price Tier</th>
+                <th>Definition</th>
+                <th class="text-right">Volume Change</th>
+                <th class="text-right">Value Change</th>
+                <th class="text-right">% of Revenue</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr style="background: #FFF5F5;">
+                <td class="bold">Budget</td>
+                <td>EUR 0-3</td>
+                <td class="text-right negative">-24%</td>
+                <td class="text-right negative">-17%</td>
+                <td class="text-right">6%</td>
+            </tr>
+            <tr>
+                <td class="bold">Standard</td>
+                <td>EUR 3-10</td>
+                <td class="text-right positive">+3%</td>
+                <td class="text-right positive">+1%</td>
+                <td class="text-right">13%</td>
+            </tr>
+            <tr style="background: #D4EDDA33;">
+                <td class="bold">Premium</td>
+                <td>EUR 10-50</td>
+                <td class="text-right negative">-2%</td>
+                <td class="text-right positive">+2%</td>
+                <td class="text-right bold">46%</td>
+            </tr>
+            <tr style="background: #FFF5F5;">
+                <td class="bold">High-Value</td>
+                <td>EUR 50+</td>
+                <td class="text-right negative">-3%</td>
+                <td class="text-right negative">-9%</td>
+                <td class="text-right">35%</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <div class="two-col">
+        <div class="insight-box">
+            <div class="insight-label">Key Insight</div>
+            <p style="margin: 0;">Budget tier = 61% of VOLUME but only 6% of REVENUE. The volume collapse happened in low-value products. Premium + High-Value = 20% of volume but 81% of revenue.</p>
+        </div>
+        <div class="action-box">
+            <div class="action-label">The Real Concern</div>
+            <p style="margin: 0;">High-Value tier declined -9% = -141K. Combined with Non-Dealer collapse, this suggests equipment/big-ticket slowdown.</p>
+        </div>
+    </div>
+    
+    <p style="font-size: 8pt; color: #666; margin-top: 4mm;"><strong>Note:</strong> Tier bridge uses product lines with unit price bands (-3%, -145K). Net revenue includes additional lines/adjustments outside tier bands (-5%, -193K).</p>
+    
+    <div class="page-footer">
+        <span>CONGs | Commercial Analytics Case Study</span>
+        <span>Page 3</span>
+    </div>
+</div>
+
+<!-- PAGE 4: Dealer Tier Analysis -->
+<div class="page">
+    <h1>Dealer Tier Analysis</h1>
+    
+    <p>We classified the client's 14 dealers into three tiers based on cumulative 4-year sales, enabling differentiated strategies for each segment.</p>
+    
+    <div class="three-col">
+        <div class="tier-box tier-1">
+            <div class="tier-header">Tier 1 - Major Dealers</div>
+            <p style="font-size: 9pt; margin-bottom: 2mm;"><strong>3 dealers | 43.7% of revenue</strong></p>
+            <ul style="font-size: 9pt; margin: 0;">
+                <li>Dealer 1 (Capital Region) - 2.4M</li>
+                <li>Dealer 2 (Central Greece) - 2.1M</li>
+                <li>Dealer 3 (Western Greece) - 1.6M</li>
+            </ul>
+            <p style="font-size: 8pt; margin-top: 2mm; color: #856404;"><strong>Strategy:</strong> Protect & optimize product mix</p>
+        </div>
+        <div class="tier-box tier-2">
+            <div class="tier-header">Tier 2 - Strong Dealers</div>
+            <p style="font-size: 9pt; margin-bottom: 2mm;"><strong>5 dealers | 38.4% of revenue</strong></p>
+            <ul style="font-size: 9pt; margin: 0;">
+                <li>Dealer 4 (Crete West)</li>
+                <li>Dealer 5 (Crete East)</li>
+                <li>Dealer 6 (Peloponnese)</li>
+                <li>Dealer 7 (Northern Greece)</li>
+                <li>Dealer 8 (Islands)</li>
+            </ul>
+            <p style="font-size: 8pt; margin-top: 2mm; color: #004085;"><strong>Strategy:</strong> Address Dealer 5's -10% decline</p>
+        </div>
+        <div class="tier-box tier-3">
+            <div class="tier-header">Tier 3 - Developing</div>
+            <p style="font-size: 9pt; margin-bottom: 2mm;"><strong>6 dealers | 17.9% of revenue</strong></p>
+            <ul style="font-size: 9pt; margin: 0;">
+                <li>Dealer 9 (Attica)</li>
+                <li>Dealer 10 (Northwest)</li>
+                <li>Dealer 11 (Northeast)</li>
+                <li>+ 3 others</li>
+            </ul>
+            <p style="font-size: 8pt; margin-top: 2mm; color: #155724;"><strong>Strategy:</strong> Watch rising stars (Dealer 10 +5.7%)</p>
+        </div>
+    </div>
+    
+    <h2>Dealer Performance Matrix (2024 vs 2025)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Dealer</th>
+                <th>Region</th>
+                <th class="text-right">4-Year Sales</th>
+                <th class="text-right">EUR/Unit</th>
+                <th class="text-right">Sales YoY</th>
+                <th class="text-right">Units YoY</th>
+                <th>Trend</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="bold">Dealer 1</td>
+                <td>Capital Region</td>
+                <td class="text-right">2,444K</td>
+                <td class="text-right bold">10.13</td>
+                <td class="text-right positive">+0.4%</td>
+                <td class="text-right positive">+7.3%</td>
+                <td><span class="tag tag-positive">Stable</span></td>
+            </tr>
+            <tr>
+                <td class="bold">Dealer 2</td>
+                <td>Central Greece</td>
+                <td class="text-right">2,052K</td>
+                <td class="text-right">5.18</td>
+                <td class="text-right negative">-3.7%</td>
+                <td class="text-right negative">-18.4%</td>
+                <td><span class="tag tag-neutral">Higher value</span></td>
+            </tr>
+            <tr>
+                <td class="bold">Dealer 3</td>
+                <td>Western Greece</td>
+                <td class="text-right">1,635K</td>
+                <td class="text-right">5.51</td>
+                <td class="text-right positive">+1.0%</td>
+                <td class="text-right negative">-14.7%</td>
+                <td><span class="tag tag-neutral">Higher value</span></td>
+            </tr>
+            <tr>
+                <td>Dealer 4</td>
+                <td>Crete West</td>
+                <td class="text-right">1,340K</td>
+                <td class="text-right">4.76</td>
+                <td class="text-right positive">+4.1%</td>
+                <td class="text-right negative">-11.5%</td>
+                <td><span class="tag tag-positive">Growing</span></td>
+            </tr>
+            <tr style="background: #FFF5F5;">
+                <td>Dealer 5</td>
+                <td>Crete East</td>
+                <td class="text-right">1,170K</td>
+                <td class="text-right">4.76</td>
+                <td class="text-right negative">-10.1%</td>
+                <td class="text-right negative">-39.1%</td>
+                <td><span class="tag tag-negative">Attention</span></td>
+            </tr>
+            <tr>
+                <td>Dealer 10</td>
+                <td>Northwest</td>
+                <td class="text-right">607K</td>
+                <td class="text-right">4.19</td>
+                <td class="text-right positive">+5.7%</td>
+                <td class="text-right negative">-34.9%</td>
+                <td><span class="tag tag-positive">Rising star</span></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <div class="insight-box">
+        <div class="insight-label">Key Pattern</div>
+        <p style="margin: 0;">Most dealers are selling fewer units at higher prices (Volume down, Value up). This could be healthy margin improvement OR it could signal customer relationship risk if dentists are buying everyday consumables elsewhere.</p>
+    </div>
+    
+    <div class="page-footer">
+        <span>CONGs | Commercial Analytics Case Study</span>
+        <span>Page 4</span>
+    </div>
+</div>
+
+<!-- PAGE 5: Revenue Analysis -->
+<div class="page">
+    <h1>Revenue Contribution Analysis</h1>
+    
+    <p>We analyzed where the revenue changes came from to identify which product tiers and channels matter most for 2026 strategy.</p>
+    
+    <h2>Net Revenue Contribution by Tier</h2>
+    <div class="four-col">
+        <div class="highlight-box" style="text-align: center; border-left: 3px solid var(--negative);">
+            <p style="font-size: 9pt; margin-bottom: 1mm;">Budget Tier</p>
+            <p style="font-size: 16pt; font-weight: 700; color: var(--negative);">-48K</p>
+            <p style="font-size: 8pt; opacity: 0.7;">Limited impact</p>
+        </div>
+        <div class="highlight-box" style="text-align: center; border-left: 3px solid var(--positive);">
+            <p style="font-size: 9pt; margin-bottom: 1mm;">Standard Tier</p>
+            <p style="font-size: 16pt; font-weight: 700; color: var(--positive);">+6K</p>
+            <p style="font-size: 8pt; opacity: 0.7;">Slight gain</p>
+        </div>
+        <div class="highlight-box" style="text-align: center; border-left: 3px solid var(--positive);">
+            <p style="font-size: 9pt; margin-bottom: 1mm;">Premium Tier</p>
+            <p style="font-size: 16pt; font-weight: 700; color: var(--positive);">+38K</p>
+            <p style="font-size: 8pt; opacity: 0.7;">46% of revenue - GREW</p>
+        </div>
+        <div class="highlight-box navy" style="text-align: center;">
+            <p style="font-size: 9pt; margin-bottom: 1mm; color: var(--congs-cream);">High-Value Tier</p>
+            <p style="font-size: 16pt; font-weight: 700; color: var(--congs-light);">-141K</p>
+            <p style="font-size: 8pt; opacity: 0.7;">THE REAL CONCERN</p>
+        </div>
+    </div>
+    
+    <h2>Supplier Categories by Price Point</h2>
+    <div class="three-col">
+        <div class="highlight-box" style="border-left: 3px solid var(--positive);">
+            <h3 style="color: var(--positive);">High-Value Equipment</h3>
+            <p style="font-size: 9pt;">>100 EUR/unit</p>
+            <ul style="font-size: 9pt;">
+                <li>Supplier A - 374/unit</li>
+                <li>Supplier B - 281/unit</li>
+                <li>Supplier C - 81/unit</li>
+            </ul>
+            <p style="font-size: 8pt; margin-top: 2mm;">Imaging, chairs, X-ray. Big-ticket capital purchases.</p>
+        </div>
+        <div class="highlight-box" style="border-left: 3px solid #856404;">
+            <h3 style="color: #856404;">Mid-Range Consumables</h3>
+            <p style="font-size: 9pt;">10-30 EUR/unit</p>
+            <ul style="font-size: 9pt;">
+                <li>Supplier D - 24/unit</li>
+                <li>Supplier E - 20/unit</li>
+                <li>Supplier F - 18/unit</li>
+            </ul>
+            <p style="font-size: 8pt; margin-top: 2mm;">Premium composites, bonding agents. Steady demand.</p>
+        </div>
+        <div class="highlight-box" style="border-left: 3px solid var(--negative);">
+            <h3 style="color: var(--negative);">Volume Products</h3>
+            <p style="font-size: 9pt;"><10 EUR/unit</p>
+            <ul style="font-size: 9pt;">
+                <li>Supplier G - 1.67/unit</li>
+                <li>Supplier H - 3.97/unit</li>
+                <li>Supplier I - 7.30/unit</li>
+            </ul>
+            <p style="font-size: 8pt; margin-top: 2mm;">Dental burs, basic consumables. Watch margins.</p>
+        </div>
+    </div>
+    
+    <h2>Channel Strategy Insight</h2>
+    <div class="two-col">
+        <div>
+            <table>
+                <thead>
+                    <tr><th>Channel</th><th class="text-right">Share</th><th class="text-right">EUR/Unit</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td class="bold">Dealers</td><td class="text-right">92%</td><td class="text-right">6.01</td></tr>
+                    <tr><td class="bold">Direct (Non-Dealers)</td><td class="text-right">8%</td><td class="text-right bold">132</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <div class="action-box">
+                <div class="action-label">Strategic Insight</div>
+                <p style="margin: 0; font-size: 9pt;">Direct channel = 22x higher EUR/unit. These are capital equipment sales sold directly to end customers. The 2024 peak and 2025 decline in direct sales explains much of the revenue drop.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="page-footer">
+        <span>CONGs | Commercial Analytics Case Study</span>
+        <span>Page 5</span>
+    </div>
+</div>
+
+<!-- PAGE 6: What We Know vs Don't Know -->
+<div class="page">
+    <h1>What We Know vs What We Don't Know</h1>
+    
+    <div class="two-col">
+        <div>
+            <h2 style="color: var(--positive);">What the Data Tells Us</h2>
+            <ol style="font-size: 10pt; padding-left: 5mm;">
+                <li style="margin-bottom: 2mm;">Sell-in volume to dealers dropped 16%</li>
+                <li style="margin-bottom: 2mm;">Average transaction value increased 21% (6.12 to 7.41/unit)</li>
+                <li style="margin-bottom: 2mm;">Dealer channel revenue stayed flat (+1%)</li>
+                <li style="margin-bottom: 2mm;">Non-dealer channel collapsed (-50%)</li>
+                <li style="margin-bottom: 2mm;">Budget tier = 61% of volume but only 6% of revenue</li>
+                <li style="margin-bottom: 2mm;">Premium tier = 46% of revenue and GREW +2%</li>
+                <li style="margin-bottom: 2mm;">High-Value tier declined -9% = -141K</li>
+                <li style="margin-bottom: 2mm;">Net revenue change: -145K (-3%)</li>
+            </ol>
+        </div>
+        <div>
+            <h2 style="color: var(--negative);">Data Gaps</h2>
+            <ul style="font-size: 10pt;">
+                <li style="margin-bottom: 2mm;">Sell-through data (what dealers actually sold to end customers)</li>
+                <li style="margin-bottom: 2mm;">Dealer inventory levels (destocking vs restocking cycles)</li>
+                <li style="margin-bottom: 2mm;">Whether dealers switched to competitor suppliers</li>
+                <li style="margin-bottom: 2mm;">Whether overall market contracted</li>
+                <li style="margin-bottom: 2mm;">Whether same customers buying less or fewer customers buying</li>
+                <li style="margin-bottom: 2mm;">Root cause of non-dealer channel collapse</li>
+            </ul>
+        </div>
+    </div>
+    
+    <h2>The Customer Relationship Risk</h2>
+    <div class="highlight-box navy">
+        <p style="font-size: 11pt; margin: 0;">Losing budget tier sales may not hurt revenue much today. BUT these everyday purchases keep customers coming back regularly. <strong>Risk: If they buy consumables elsewhere, they may eventually buy everything elsewhere.</strong></p>
+    </div>
+    
+    <h2>What the Volume Decline Could Mean</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Possible Explanation</th>
+                <th>Implication</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Dealers selling to fewer end customers</td>
+                <td>Market share loss at dealer level - concerning</td>
+            </tr>
+            <tr>
+                <td>Same customers buying less frequently</td>
+                <td>Demand/consumption decline in market</td>
+            </tr>
+            <tr>
+                <td>Dealers destocking inventory</td>
+                <td>Temporary - should reverse in coming months</td>
+            </tr>
+            <tr style="background: #FFF5F5;">
+                <td>Dealers sourcing from competitors</td>
+                <td>Losing share with own dealers - very concerning</td>
+            </tr>
+            <tr>
+                <td>Overall market contraction</td>
+                <td>Industry-wide issue - not unique to client</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <div class="insight-box">
+        <div class="insight-label">Recommendation</div>
+        <p style="margin: 0;">Request sell-through reports from key dealers to close the data gap. Even partial data from the top 3-5 dealers would provide valuable insight into whether this is a market share problem, market size problem, or timing problem.</p>
+    </div>
+    
+    <div class="page-footer">
+        <span>CONGs | Commercial Analytics Case Study</span>
+        <span>Page 6</span>
+    </div>
+</div>
+
+<!-- PAGE 7: Strategic Questions -->
+<div class="page">
+    <h1>Strategic Questions for 2026</h1>
+    
+    <p>Based on the analysis, we prepared a structured set of questions for the board to address. These questions bridge what the data shows with what the business needs to decide.</p>
+    
+    <h2>Understanding the Volume Decline</h2>
+    <table>
+        <tbody>
+            <tr>
+                <td class="bold" style="width: 15%;">Q1</td>
+                <td>Do we have visibility into dealer inventory levels? If dealers are holding less stock, the decline may be temporary.</td>
+            </tr>
+            <tr>
+                <td class="bold">Q2</td>
+                <td>Have any dealers reported losing customers to competitors? Direct feedback would clarify if this is a market share problem.</td>
+            </tr>
+            <tr>
+                <td class="bold">Q3</td>
+                <td>Is the budget tier decline across all dealers, or concentrated in specific ones?</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <h2>Strategic Direction</h2>
+    <table>
+        <tbody>
+            <tr>
+                <td class="bold" style="width: 15%;">Q4</td>
+                <td>Is the shift to premium/higher-priced products an intentional strategy? If yes, budget volume decline may be acceptable.</td>
+            </tr>
+            <tr>
+                <td class="bold">Q5</td>
+                <td>Should we invest in getting sell-through data from dealers? This would close the biggest data gap.</td>
+            </tr>
+            <tr>
+                <td class="bold">Q6</td>
+                <td>Given Premium tier is 46% of revenue and grew +2%, should we focus there rather than recovering Budget volume?</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <h2>Immediate Action Items</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Priority</th>
+                <th>Action</th>
+                <th>Owner</th>
+                <th>Impact</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><span class="tag tag-negative">Urgent</span></td>
+                <td>Investigate Non-Dealer 50% collapse - which equipment contracts were lost?</td>
+                <td>CEO</td>
+                <td>243K recovery potential</td>
+            </tr>
+            <tr>
+                <td><span class="tag tag-negative">Urgent</span></td>
+                <td>Request sell-through data from top 3-5 dealers</td>
+                <td>Sales</td>
+                <td>Close critical data gap</td>
+            </tr>
+            <tr>
+                <td><span class="tag tag-negative">Urgent</span></td>
+                <td>Address Dealer 5's -10% decline - root cause analysis</td>
+                <td>Sales</td>
+                <td>Tier 2 dealer at risk</td>
+            </tr>
+            <tr>
+                <td><span class="tag tag-neutral">Medium</span></td>
+                <td>Understand High-Value tier -9% decline (-141K)</td>
+                <td>Strategy</td>
+                <td>Largest revenue impact</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <div class="page-footer">
+        <span>CONGs | Commercial Analytics Case Study</span>
+        <span>Page 7</span>
+    </div>
+</div>
+
+<!-- PAGE 8: How We Work -->
+<div class="page">
+    <h1>How We Work</h1>
+    
+    <h2>Our Approach</h2>
+    <div class="two-col">
+        <div>
+            <h3>1. Know the Truth</h3>
+            <p>We consolidate data from multiple sources, clean it, and identify the real drivers. No guesswork - just maths you can trust.</p>
+            
+            <h3>2. See It Simply</h3>
+            <p>We deliver insights in plain English, not spreadsheet gibberish. Every metric answers "So what?" and "What do I do?"</p>
+            
+            <h3>3. Execute with Ownership</h3>
+            <p>Every action has a clear mandate: lever to pull, owner, deadline. We align with your operating rhythm.</p>
+        </div>
+        <div>
+            <div class="highlight-box">
+                <h3>What This Client Received</h3>
+                <ul>
+                    <li>5 interactive HTML dashboards</li>
+                    <li>Consolidated data files (verified)</li>
+                    <li>Price tier analysis with revenue contribution</li>
+                    <li>Dealer tier classification</li>
+                    <li>Board strategy summary (what we know vs don't know)</li>
+                    <li>Strategic questions for discussion</li>
+                </ul>
+                <p style="font-size: 10pt; margin-top: 3mm; padding-top: 3mm; border-top: 1px solid var(--congs-navy); opacity: 0.8;"><strong>From raw Excel exports to board pack + CEO portal in 2 weeks.</strong></p>
+            </div>
+        </div>
+    </div>
+    
+    <h2>What CONGs Stands For</h2>
+    <div class="scorecards" style="grid-template-columns: repeat(5, 1fr);">
+        <div class="scorecard" style="padding: 3mm;">
+            <div class="scorecard-value" style="font-size: 14pt;">C</div>
+            <div class="scorecard-label">Clarity</div>
+        </div>
+        <div class="scorecard" style="padding: 3mm;">
+            <div class="scorecard-value" style="font-size: 14pt;">O</div>
+            <div class="scorecard-label">Opportunity</div>
+        </div>
+        <div class="scorecard" style="padding: 3mm;">
+            <div class="scorecard-value" style="font-size: 14pt;">N</div>
+            <div class="scorecard-label">Numbers</div>
+        </div>
+        <div class="scorecard" style="padding: 3mm;">
+            <div class="scorecard-value" style="font-size: 14pt;">G</div>
+            <div class="scorecard-label">Growth</div>
+        </div>
+        <div class="scorecard" style="padding: 3mm;">
+            <div class="scorecard-value" style="font-size: 14pt;">s</div>
+            <div class="scorecard-label">Sustain</div>
+        </div>
+    </div>
+    
+    <div style="text-align: center; margin-top: 15mm;">
+        <img src="congs-logo.png" alt="CONGs" style="height: 40mm; width: auto;">
+    </div>
+    
+    <div class="highlight-box navy" style="text-align: center; padding: 8mm; margin-top: 8mm;">
+        <p style="font-size: 14pt; font-weight: 300; margin-bottom: 3mm;">Data In, Decisions Out</p>
+        <p style="font-size: 11pt; margin: 0; opacity: 0.9;">We help SMEs turn messy data into clear revenue actions.</p>
+    </div>
+    
+    <div style="text-align: center; margin-top: 8mm;">
+        <p style="font-size: 11pt; margin-bottom: 2mm;"><strong>Olga Sakka</strong></p>
+        <p style="font-size: 10pt; color: var(--congs-navy);">olga.sakka@congs.co.uk | www.congs.co.uk</p>
+    </div>
+    
+    <div class="page-footer">
+        <span>CONGs | Commercial Analytics Case Study</span>
+        <span>Page 8</span>
+    </div>
+</div>
+
+</body>
+</html>
