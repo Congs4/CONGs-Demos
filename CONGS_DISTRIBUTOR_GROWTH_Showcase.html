@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CONGs - Distributor Growth Strategy Case Study</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --congs-navy: #2A3C47;
+            --congs-cream: #EBE7D9;
+            --congs-light: #FFF5D0;
+            --congs-white: #FFFFFF;
+            --congs-text: #2A3C47;
+            --positive: #2D6A4F;
+            --negative: #9B2C2C;
+            --accent: #8B4513;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        @page {
+            size: A4;
+            margin: 0;
+        }
+        
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--congs-white);
+            color: var(--congs-text);
+            line-height: 1.6;
+            font-size: 11pt;
+        }
+        
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 20mm;
+            margin: 0 auto;
+            background: var(--congs-white);
+            page-break-after: always;
+            position: relative;
+        }
+        
+        .page:last-child {
+            page-break-after: auto;
+        }
+        
+        /* Cover Page */
+        .cover {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            background: var(--congs-navy);
+            color: var(--congs-cream);
+            padding: 40mm;
+        }
+        
+        .cover-logo {
+            height: 25mm;
+            width: auto;
+            margin-bottom: 10mm;
+        }
+        
+        .cover-tagline {
+            font-size: 14pt;
+            font-weight: 300;
+            letter-spacing: 2px;
+            opacity: 0.8;
+            margin-bottom: 30mm;
+        }
+        
+        .cover-title {
+            font-size: 28pt;
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 8mm;
+        }
+        
+        .cover-subtitle {
+            font-size: 14pt;
+            font-weight: 400;
+            opacity: 0.9;
+            margin-bottom: 20mm;
+        }
+        
+        .cover-client {
+            font-size: 11pt;
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            opacity: 0.7;
+        }
+        
+        .cover-date {
+            position: absolute;
+            bottom: 20mm;
+            left: 40mm;
+            font-size: 10pt;
+            opacity: 0.6;
+        }
+        
+        /* Section Headers */
+        h1 {
+            font-size: 20pt;
+            font-weight: 600;
+            color: var(--congs-navy);
+            margin-bottom: 6mm;
+            padding-bottom: 3mm;
+            border-bottom: 2px solid var(--congs-cream);
+        }
+        
+        h2 {
+            font-size: 14pt;
+            font-weight: 600;
+            color: var(--congs-navy);
+            margin: 6mm 0 4mm 0;
+        }
+        
+        h3 {
+            font-size: 11pt;
+            font-weight: 600;
+            color: var(--congs-navy);
+            margin: 4mm 0 2mm 0;
+        }
+        
+        p {
+            margin-bottom: 3mm;
+            text-align: left;
+        }
+        
+        /* Highlight Box */
+        .highlight-box {
+            background: var(--congs-cream);
+            padding: 5mm;
+            border-radius: 2mm;
+            margin: 5mm 0;
+        }
+        
+        .highlight-box.navy {
+            background: var(--congs-navy);
+            color: var(--congs-cream);
+        }
+        
+        /* Scorecards */
+        .scorecards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 4mm;
+            margin: 5mm 0;
+        }
+        
+        .scorecards.three-up {
+            grid-template-columns: repeat(3, 1fr);
+        }
+        
+        .scorecard {
+            background: var(--congs-cream);
+            padding: 4mm;
+            border-radius: 2mm;
+            text-align: center;
+        }
+        
+        .scorecard-value {
+            font-size: 18pt;
+            font-weight: 700;
+            color: var(--congs-navy);
+        }
+        
+        .scorecard-label {
+            font-size: 8pt;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--congs-navy);
+            opacity: 0.7;
+            margin-top: 1mm;
+        }
+        
+        .scorecard-change {
+            font-size: 9pt;
+            font-weight: 600;
+            margin-top: 1mm;
+        }
+        
+        .positive { color: var(--positive); }
+        .negative { color: var(--negative); }
+        
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 9pt;
+            margin: 4mm 0;
+        }
+        
+        th {
+            background: var(--congs-navy);
+            color: var(--congs-cream);
+            padding: 2.5mm 3mm;
+            text-align: left;
+            font-weight: 600;
+            font-size: 8pt;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        td {
+            padding: 2.5mm 3mm;
+            border-bottom: 1px solid var(--congs-cream);
+        }
+        
+        .text-right { text-align: right; }
+        .text-center { text-align: center; }
+        .bold { font-weight: 600; }
+        
+        /* Two Column Layout */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6mm;
+        }
+        
+        .three-col {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4mm;
+        }
+        
+        .four-col {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 3mm;
+        }
+        
+        .five-col {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 3mm;
+        }
+        
+        /* Insight Box */
+        .insight-box {
+            background: var(--congs-light);
+            border-left: 3px solid var(--congs-navy);
+            padding: 4mm;
+            margin: 4mm 0;
+        }
+        
+        .insight-label {
+            font-size: 8pt;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--congs-navy);
+            margin-bottom: 2mm;
+        }
+        
+        /* Action Box */
+        .action-box {
+            background: var(--congs-navy);
+            color: var(--congs-cream);
+            padding: 4mm;
+            border-radius: 2mm;
+            margin: 3mm 0;
+        }
+        
+        .action-label {
+            font-size: 8pt;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.8;
+            margin-bottom: 1mm;
+        }
+        
+        /* Lists */
+        ul, ol {
+            margin: 3mm 0 3mm 5mm;
+            padding-left: 0;
+        }
+        
+        li {
+            margin-bottom: 2mm;
+            padding-left: 2mm;
+        }
+        
+        /* Footer */
+        .page-footer {
+            position: absolute;
+            bottom: 10mm;
+            left: 20mm;
+            right: 20mm;
+            display: flex;
+            justify-content: space-between;
+            font-size: 8pt;
+            color: var(--congs-navy);
+            opacity: 0.5;
+            border-top: 1px solid var(--congs-cream);
+            padding-top: 3mm;
+        }
+        
+        /* Tags */
+        .tag {
+            display: inline-block;
+            padding: 1mm 2.5mm;
+            border-radius: 1mm;
+            font-size: 7pt;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        
+        .tag-positive { background: #D4EDDA; color: #155724; }
+        .tag-negative { background: #F8D7DA; color: #721C24; }
+        .tag-neutral { background: var(--congs-cream); color: var(--congs-navy); }
+        .tag-highlight { background: var(--congs-light); color: var(--congs-navy); }
+        
+        /* Priority Cards */
+        .priority-card {
+            background: var(--congs-white);
+            border: 1px solid var(--congs-cream);
+            border-radius: 2mm;
+            padding: 3mm;
+            margin-bottom: 3mm;
+        }
+        
+        .priority-number {
+            display: inline-block;
+            width: 6mm;
+            height: 6mm;
+            background: var(--congs-navy);
+            color: var(--congs-cream);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 6mm;
+            font-size: 8pt;
+            font-weight: 700;
+            margin-right: 2mm;
+        }
+        
+        .priority-title {
+            font-weight: 600;
+            font-size: 10pt;
+            color: var(--congs-navy);
+        }
+        
+        .priority-detail {
+            font-size: 8pt;
+            color: #666;
+            margin-top: 1mm;
+            margin-left: 8mm;
+        }
+        
+        /* Funnel */
+        .funnel-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 5mm 0;
+        }
+        
+        .funnel-stage {
+            text-align: center;
+            padding: 3mm;
+            margin: 1mm 0;
+            color: white;
+            font-weight: 600;
+            border-radius: 2mm;
+        }
+        
+        .funnel-stage-1 { background: #4A90A4; width: 100%; }
+        .funnel-stage-2 { background: #3D7A8C; width: 85%; }
+        .funnel-stage-3 { background: #2F6474; width: 70%; }
+        .funnel-stage-4 { background: #2A5563; width: 55%; }
+        .funnel-stage-5 { background: #1E3D47; width: 40%; }
+        
+        .funnel-label {
+            font-size: 9pt;
+        }
+        
+        .funnel-value {
+            font-size: 12pt;
+            font-weight: 700;
+        }
+        
+        .funnel-rate {
+            font-size: 8pt;
+            opacity: 0.8;
+        }
+        
+        /* Lead Mix Cards */
+        .lead-card {
+            background: var(--congs-cream);
+            padding: 4mm;
+            border-radius: 2mm;
+            text-align: center;
+        }
+        
+        .lead-value {
+            font-size: 20pt;
+            font-weight: 700;
+            color: var(--congs-navy);
+        }
+        
+        .lead-channel {
+            font-size: 8pt;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 1mm;
+        }
+        
+        .lead-percent {
+            font-size: 10pt;
+            font-weight: 600;
+            color: var(--positive);
+            margin-top: 1mm;
+        }
+        
+        /* KPI Row */
+        .kpi-row {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr 1.5fr;
+            border-bottom: 1px solid var(--congs-cream);
+            padding: 3mm 0;
+        }
+        
+        .kpi-row.header {
+            background: var(--congs-navy);
+            color: var(--congs-cream);
+            font-weight: 600;
+            font-size: 8pt;
+            text-transform: uppercase;
+            padding: 2mm 3mm;
+            border-radius: 2mm 2mm 0 0;
+        }
+        
+        .kpi-pillar {
+            font-weight: 600;
+            color: var(--congs-navy);
+        }
+        
+        /* Revenue Model */
+        .year-card {
+            background: var(--congs-navy);
+            color: var(--congs-cream);
+            padding: 4mm;
+            border-radius: 2mm;
+            text-align: center;
+        }
+        
+        .year-label {
+            font-size: 12pt;
+            font-weight: 700;
+            margin-bottom: 2mm;
+        }
+        
+        .year-revenue {
+            font-size: 20pt;
+            font-weight: 700;
+            color: var(--congs-light);
+        }
+        
+        .year-status {
+            font-size: 8pt;
+            margin-top: 2mm;
+            opacity: 0.8;
+        }
+        
+        /* Arrow between cards */
+        .arrow-right {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20pt;
+            color: var(--congs-navy);
+        }
+        
+        /* Print Optimization */
+        @media print {
+            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .page { margin: 0; box-shadow: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- PAGE 1: Cover -->
+<div class="page cover">
+    <img src="congs-logo.png" alt="CONGs" class="cover-logo">
+    
+    <div class="cover-title">Distributor Growth<br>Strategy Case Study</div>
+    <div class="cover-subtitle">From 8 to 22 agents/month: Building a scalable recruitment engine</div>
+    
+    <div class="cover-client">Client: Agent Network Company | Property Services</div>
+    
+    <div class="cover-date">2025 | www.congs.co.uk</div>
+</div>
+
+<!-- PAGE 2: Executive Summary -->
+<div class="page">
+    <h1>Executive Summary</h1>
+    
+    <p>A property services business was expanding its network of self-employed agents. Monthly recruitment sat at around 8 new agents but the target was 22. The website converted poorly, the value proposition was unclear, and there was no visibility into which recruitment sources delivered quality versus just volume.</p>
+    
+    <h2>The Challenge</h2>
+    <p>Leadership needed a credible plan to reach 300 agents within 12 months. They had no clear funnel metrics, inconsistent messaging, and were unable to distinguish between lead sources that produced active agents versus those that just generated sign-ups.</p>
+    
+    <h2>What We Built</h2>
+    <div class="scorecards">
+        <div class="scorecard">
+            <div class="scorecard-value">7</div>
+            <div class="scorecard-label">Website Priorities</div>
+        </div>
+        <div class="scorecard">
+            <div class="scorecard-value">5</div>
+            <div class="scorecard-label">Lead Channels</div>
+        </div>
+        <div class="scorecard">
+            <div class="scorecard-value">7</div>
+            <div class="scorecard-label">KPI Pillars</div>
+        </div>
+        <div class="scorecard">
+            <div class="scorecard-value">3-Year</div>
+            <div class="scorecard-label">Revenue Model</div>
+        </div>
+    </div>
+    
+    <h2>Key Deliverables</h2>
+    <ul>
+        <li><strong>Website Gap Analysis</strong> - 7 priority areas with specific changes and business rationale</li>
+        <li><strong>Recruitment Funnel Model</strong> - Lead-to-active-agent conversion with stage-by-stage metrics</li>
+        <li><strong>Lead Source Strategy</strong> - Channel mix with volume targets and budget allocation</li>
+        <li><strong>KPI Scorecard</strong> - 7-pillar framework with measurable 12-month targets</li>
+        <li><strong>Revenue Model</strong> - 3-year pathway from 2M to 10M with assumptions</li>
+    </ul>
+    
+    <h2>The Key Result</h2>
+    <div class="highlight-box navy">
+        <p style="font-size: 12pt; margin: 0;"><strong>3-year pathway: 2M to 10M.</strong> We mapped the entire recruitment funnel, identified a 4x growth opportunity in mentor conversion (10% vs 40% benchmark), calculated the required 440 monthly leads by source, and built a financial model showing the pathway from 300 to 800 agents generating 10M in revenue by Year 3.</p>
+    </div>
+    
+    <div class="page-footer">
+        <span>CONGs | Distributor Growth Strategy Case Study</span>
+        <span>Page 2</span>
+    </div>
+</div>
+
+<!-- PAGE 3: The Problem - Website Gaps -->
+<div class="page">
+    <h1>The Problem: Website Gaps Analysis</h1>
+    
+    <p>We audited the recruitment website and identified 7 priority areas blocking conversion. Each gap had a specific change recommendation with clear business rationale.</p>
+    
+    <div class="two-col" style="margin-top: 5mm;">
+        <div>
+            <div class="priority-card">
+                <span class="priority-number">1</span>
+                <span class="priority-title">Value Proposition Page</span>
+                <div class="priority-detail">
+                    <strong>Gap:</strong> Generic "become a consultant" language<br>
+                    <strong>Change:</strong> Specific headline with three income streams + 30-sec explainer<br>
+                    <strong>Why:</strong> Speaks to income + autonomy
+                </div>
+            </div>
+            
+            <div class="priority-card">
+                <span class="priority-number">2</span>
+                <span class="priority-title">Proof & Credibility</span>
+                <div class="priority-detail">
+                    <strong>Gap:</strong> International scale mentioned inconsistently<br>
+                    <strong>Change:</strong> Add local proof points, compliance badges, property mark<br>
+                    <strong>Why:</strong> Trust via visible compliance + local traction
+                </div>
+            </div>
+            
+            <div class="priority-card">
+                <span class="priority-number">3</span>
+                <span class="priority-title">Earnings Clarity</span>
+                <div class="priority-detail">
+                    <strong>Gap:</strong> Vague earnings blog<br>
+                    <strong>Change:</strong> Transparent earnings calculator with inputs: fee %, average selling price, split<br>
+                    <strong>Why:</strong> "What can I earn?" is the #1 question
+                </div>
+            </div>
+            
+            <div class="priority-card">
+                <span class="priority-number">4</span>
+                <span class="priority-title">Pathway to Success</span>
+                <div class="priority-detail">
+                    <strong>Gap:</strong> Mentorship referenced but abstract<br>
+                    <strong>Change:</strong> Visualise first 90 days: training, compliance, prospecting cadence, first completion<br>
+                    <strong>Why:</strong> Converts interest into confidence & belief
+                </div>
+            </div>
+        </div>
+        
+        <div>
+            <div class="priority-card">
+                <span class="priority-number">5</span>
+                <span class="priority-title">Social Proof</span>
+                <div class="priority-detail">
+                    <strong>Gap:</strong> Mostly generic images<br>
+                    <strong>Change:</strong> Case studies with gross fee, time-to-first-completion, prior career; short video testimonials<br>
+                    <strong>Why:</strong> Stories de-risk the leap; aligns to "18,000 in 8 countries" scale but localised
+                </div>
+            </div>
+            
+            <div class="priority-card">
+                <span class="priority-number">6</span>
+                <span class="priority-title">Network Advantage</span>
+                <div class="priority-detail">
+                    <strong>Gap:</strong> International network is buried<br>
+                    <strong>Change:</strong> Add "List once, market across 8 countries" module with cross-border referral explainer<br>
+                    <strong>Why:</strong> Distinctive vs local competitors; leverages group scale
+                </div>
+            </div>
+            
+            <div class="priority-card">
+                <span class="priority-number">7</span>
+                <span class="priority-title">Funnel & CTAs</span>
+                <div class="priority-detail">
+                    <strong>Gap:</strong> Generic "Learn more"<br>
+                    <strong>Change:</strong> Three CTAs: "Talk to a mentor today", "See earnings examples", "Start your onboarding checklist"<br>
+                    <strong>Why:</strong> Moves visitors from curiosity to commitment; reduces drop-off
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="insight-box" style="margin-top: 5mm;">
+        <div class="insight-label">Key Insight</div>
+        <p style="margin: 0;">Each website gap was mapped to a specific conversion blocker. The changes weren't about making the site "look better" - they were about answering the questions that stop prospects from taking the next step.</p>
+    </div>
+    
+    <div class="page-footer">
+        <span>CONGs | Distributor Growth Strategy Case Study</span>
+        <span>Page 3</span>
+    </div>
+</div>
+
+<!-- PAGE 4: Recruitment Funnel -->
+<div class="page">
+    <h1>Recruitment Funnel Analysis</h1>
+    
+    <p>We mapped the entire recruitment funnel from lead to active agent, identifying where the biggest drop-offs occurred and what conversion rates were achievable.</p>
+    
+    <div class="two-col">
+        <div>
+            <h2>Overall Conversion Rate</h2>
+            <div class="highlight-box">
+                <p style="font-size: 12pt; margin: 0;"><strong>5% Lead to Agent</strong> conversion means you need approximately <strong>20 leads</strong> to acquire <strong>1 active agent</strong>.</p>
+            </div>
+            
+            <h2>Funnel Stage Breakdown</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Stage</th>
+                        <th class="text-right">Rate</th>
+                        <th class="text-right">Monthly</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="bold">Qualified Leads</td>
+                        <td class="text-right">Entry</td>
+                        <td class="text-right">440</td>
+                    </tr>
+                    <tr>
+                        <td>Presentation Registered</td>
+                        <td class="text-right">30%</td>
+                        <td class="text-right">132</td>
+                    </tr>
+                    <tr>
+                        <td>Presentation Attended</td>
+                        <td class="text-right">60%</td>
+                        <td class="text-right">79</td>
+                    </tr>
+                    <tr>
+                        <td>Agreement Signed</td>
+                        <td class="text-right">40%</td>
+                        <td class="text-right">32</td>
+                    </tr>
+                    <tr>
+                        <td class="bold">Active Agent</td>
+                        <td class="text-right">70%</td>
+                        <td class="text-right bold">22</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="action-box">
+                <div class="action-label">The Math</div>
+                <p style="margin: 0; font-size: 9pt;">To land 22 agents/month at 5% conversion, you need ~440 qualified leads/month into the funnel.</p>
+            </div>
+        </div>
+        
+        <div>
+            <h2 style="text-align: center;">Conversion Funnel</h2>
+            <div class="funnel-container">
+                <div class="funnel-stage funnel-stage-1">
+                    <div class="funnel-label">Qualified Leads</div>
+                    <div class="funnel-value">440/month</div>
+                    <div class="funnel-rate">Entry point into acquisition funnel</div>
+                </div>
+                <div class="funnel-stage funnel-stage-2">
+                    <div class="funnel-label">Presentation Registered</div>
+                    <div class="funnel-value">132 (30%)</div>
+                    <div class="funnel-rate">Signed up for opportunity session</div>
+                </div>
+                <div class="funnel-stage funnel-stage-3">
+                    <div class="funnel-label">Presentation Attended</div>
+                    <div class="funnel-value">79 (60%)</div>
+                    <div class="funnel-rate">Attended the presentation</div>
+                </div>
+                <div class="funnel-stage funnel-stage-4">
+                    <div class="funnel-label">Agreement Signed</div>
+                    <div class="funnel-value">32 (40%)</div>
+                    <div class="funnel-rate">Committed to joining as agent</div>
+                </div>
+                <div class="funnel-stage funnel-stage-5">
+                    <div class="funnel-label">Active Agent</div>
+                    <div class="funnel-value">22 (70%)</div>
+                    <div class="funnel-rate">Completed onboarding & actively working</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <h2>Agent to Mentor Progression: The Hidden Opportunity</h2>
+    <div class="two-col">
+        <div class="highlight-box" style="border-left: 4px solid var(--negative);">
+            <h3>Current Performance</h3>
+            <p style="font-size: 16pt; font-weight: 700; color: var(--negative); margin: 2mm 0;">~10%</p>
+            <p style="font-size: 9pt; margin: 0;">From 22 agents: ~2 mentors/month<br>Annual mentors: ~24-26</p>
+        </div>
+        <div class="highlight-box" style="border-left: 4px solid var(--positive);">
+            <h3>Benchmark Performance</h3>
+            <p style="font-size: 16pt; font-weight: 700; color: var(--positive); margin: 2mm 0;">~40%</p>
+            <p style="font-size: 9pt; margin: 0;">From 22 agents: ~9 mentors/month<br>Opportunity gap: <strong>4x potential</strong></p>
+        </div>
+    </div>
+    
+    <div class="page-footer">
+        <span>CONGs | Distributor Growth Strategy Case Study</span>
+        <span>Page 4</span>
+    </div>
+</div>
+
+<!-- PAGE 5: Lead Source Strategy -->
+<div class="page">
+    <h1>Lead Source Strategy</h1>
+    
+    <p>Working backwards from the 22-agent monthly target, we calculated the required lead volume by source, aligning budget allocation to the channel mix.</p>
+    
+    <h2>Required Monthly Lead Mix (440 Total)</h2>
+    <div class="five-col" style="margin: 5mm 0;">
+        <div class="lead-card">
+            <div class="lead-value">220</div>
+            <div class="lead-channel">Digital Marketing</div>
+            <div class="lead-percent">50%</div>
+        </div>
+        <div class="lead-card">
+            <div class="lead-value">110</div>
+            <div class="lead-channel">Mentor-Sourced</div>
+            <div class="lead-percent">25%</div>
+        </div>
+        <div class="lead-card">
+            <div class="lead-value">66</div>
+            <div class="lead-channel">Field Events</div>
+            <div class="lead-percent">15%</div>
+        </div>
+        <div class="lead-card">
+            <div class="lead-value">22</div>
+            <div class="lead-channel">Partnerships</div>
+            <div class="lead-percent">5%</div>
+        </div>
+        <div class="lead-card">
+            <div class="lead-value">22</div>
+            <div class="lead-channel">PR/Organic</div>
+            <div class="lead-percent">5%</div>
+        </div>
+    </div>
+    
+    <h2>Lead Channel Details</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Source</th>
+                <th class="text-right">Share of Joins</th>
+                <th class="text-right">Monthly Target (Joins)</th>
+                <th class="text-right">Leads Required</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="bold">Mentor referrals & team-builders</td>
+                <td class="text-right">25%</td>
+                <td class="text-right">5-6</td>
+                <td class="text-right">110</td>
+            </tr>
+            <tr>
+                <td class="bold">Local digital (postcode pages + retargeting)</td>
+                <td class="text-right">50%</td>
+                <td class="text-right">11</td>
+                <td class="text-right">220</td>
+            </tr>
+            <tr>
+                <td class="bold">Field events (micro-meetups, community)</td>
+                <td class="text-right">15%</td>
+                <td class="text-right">3</td>
+                <td class="text-right">66</td>
+            </tr>
+            <tr>
+                <td class="bold">Partnerships (local businesses)</td>
+                <td class="text-right">5%</td>
+                <td class="text-right">1</td>
+                <td class="text-right">22</td>
+            </tr>
+            <tr>
+                <td class="bold">Organic inbound/PR</td>
+                <td class="text-right">5%</td>
+                <td class="text-right">1</td>
+                <td class="text-right">22</td>
+            </tr>
+            <tr style="background: var(--congs-cream);">
+                <td class="bold">Total</td>
+                <td class="text-right bold">100%</td>
+                <td class="text-right bold">22</td>
+                <td class="text-right bold">440</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <h2>Budget Allocation (~341k/year)</h2>
+    <div class="two-col">
+        <div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Channel</th>
+                        <th class="text-right">Monthly</th>
+                        <th class="text-right">Annual</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Local digital</td>
+                        <td class="text-right">14k</td>
+                        <td class="text-right">168k</td>
+                    </tr>
+                    <tr>
+                        <td>Mentor content/landing & referral tools</td>
+                        <td class="text-right">7k</td>
+                        <td class="text-right">84k</td>
+                    </tr>
+                    <tr>
+                        <td>Field events</td>
+                        <td class="text-right">4k</td>
+                        <td class="text-right">48k</td>
+                    </tr>
+                    <tr>
+                        <td>Partnerships/PR</td>
+                        <td class="text-right">3k</td>
+                        <td class="text-right">36k</td>
+                    </tr>
+                    <tr style="background: var(--congs-cream);">
+                        <td class="bold">Total</td>
+                        <td class="text-right bold">~28k</td>
+                        <td class="text-right bold">~341k</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <div class="insight-box">
+                <div class="insight-label">Key Principle</div>
+                <p style="margin: 0;">Allocate budget roughly to match the join mix - 50% to local digital (which drives 50% of joins), 25% to mentor content/referral tools (which enable the 25% mentor-sourced joins), etc.</p>
+            </div>
+            <div class="action-box">
+                <div class="action-label">Recommendation</div>
+                <p style="margin: 0; font-size: 9pt;">Recognise and pay mentors on new billers in 90 days, not just sign-ups. Publish a weekly CPL & conversion dashboard by source and by mentor.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="page-footer">
+        <span>CONGs | Distributor Growth Strategy Case Study</span>
+        <span>Page 5</span>
+    </div>
+</div>
+
+<!-- PAGE 6: KPI Scorecard -->
+<div class="page">
+    <h1>KPI Scorecard</h1>
+    
+    <p>We built a 7-pillar KPI framework with clear, measurable targets for the 12-month growth plan. Each pillar has specific metrics that can be tracked monthly.</p>
+    
+    <h2>Clear, Measurable Targets for the 12-Month Growth Plan</h2>
+    
+    <table style="margin-top: 5mm;">
+        <thead>
+            <tr>
+                <th style="width: 20%;">Pillar</th>
+                <th style="width: 40%;">KPI</th>
+                <th style="width: 40%;">12-Month Target</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="bold" style="background: #E8F4F8;">Distribution</td>
+                <td>Agents EoP; % active</td>
+                <td><span class="positive bold">300</span> by Dec-26; <span class="positive bold">70%+</span> active</td>
+            </tr>
+            <tr>
+                <td class="bold" style="background: #E8F4F8;">Inventory</td>
+                <td>New mandates; conversion</td>
+                <td><span class="positive bold">+40%</span> mandates; <span class="positive bold">+5 pts</span> conversion</td>
+            </tr>
+            <tr>
+                <td class="bold" style="background: #E8F4F8;">Productivity</td>
+                <td>Completions per active; time-to-first</td>
+                <td><span class="positive bold">+2</span> comps/active; <span class="positive bold">halve</span> time-to-first</td>
+            </tr>
+            <tr>
+                <td class="bold" style="background: #E8F4F8;">Monetisation</td>
+                <td>Realised fee %; company take</td>
+                <td><span class="positive bold">+10-20 bps</span> fee; <span class="positive bold">+200-300 bps</span> take</td>
+            </tr>
+            <tr>
+                <td class="bold" style="background: #E8F4F8;">Recurring</td>
+                <td>PM lots; churn</td>
+                <td><span class="positive bold">+50%</span> lots; <span class="negative bold">&lt;10%</span> churn</td>
+            </tr>
+            <tr>
+                <td class="bold" style="background: #E8F4F8;">Network Build</td>
+                <td>% with first mentee</td>
+                <td><span class="positive bold">30%</span> of actives mentoring</td>
+            </tr>
+            <tr>
+                <td class="bold" style="background: #E8F4F8;">Brand & Trust</td>
+                <td>NPS/Engagement Score; complaints/100; compliance</td>
+                <td><span class="positive bold">&gt;60</span> NPS; <span class="positive bold">&lt;2/100</span> complaints; <span class="positive bold">&gt;98%</span> pass</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <div class="two-col" style="margin-top: 8mm;">
+        <div>
+            <h2>Why These 7 Pillars</h2>
+            <ul style="font-size: 10pt;">
+                <li><strong>Distribution:</strong> Agent count is the foundation - more feet on the ground</li>
+                <li><strong>Inventory:</strong> Mandates are the raw material - can't sell what you don't have</li>
+                <li><strong>Productivity:</strong> Completions per agent drive revenue per head</li>
+                <li><strong>Monetisation:</strong> Fee % and take rate determine margin</li>
+                <li><strong>Recurring:</strong> Property management creates predictable revenue</li>
+                <li><strong>Network Build:</strong> Mentoring creates scalable growth</li>
+                <li><strong>Brand & Trust:</strong> Reputation enables everything else</li>
+            </ul>
+        </div>
+        <div>
+            <div class="highlight-box navy">
+                <h3 style="color: var(--congs-light);">The Growth Flywheel</h3>
+                <p style="font-size: 10pt; margin: 3mm 0;">More agents (Distribution) generate more mandates (Inventory), which enable more completions (Productivity), driving higher revenue (Monetisation). Happy agents become mentors (Network Build), recruiting more agents and completing the flywheel.</p>
+                <p style="font-size: 9pt; margin: 0; opacity: 0.8;">Brand & Trust + Recurring revenue create the stable base that makes the flywheel sustainable.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="insight-box" style="margin-top: 5mm;">
+        <div class="insight-label">Implementation Note</div>
+        <p style="margin: 0;">Each KPI should be tracked monthly with red/amber/green status. The scorecard becomes the agenda for monthly leadership reviews - focus discussion on amber and red metrics, celebrate green, and adjust tactics based on what the data shows.</p>
+    </div>
+    
+    <div class="page-footer">
+        <span>CONGs | Distributor Growth Strategy Case Study</span>
+        <span>Page 6</span>
+    </div>
+</div>
+
+<!-- PAGE 7: Revenue Model -->
+<div class="page">
+    <h1>Pathway to Revenue & Profit</h1>
+    
+    <p>We built a 3-year financial model showing the pathway from 2M to 10M based on agent count, activity rates, and average transaction value.</p>
+    
+    <h2>Model Inputs & Assumptions</h2>
+    <div class="highlight-box" style="font-size: 9pt;">
+        <p style="margin: 0;"><strong>Staff:</strong> ~0.8m | <strong>Non-staff opex:</strong> ~0.9-1.2m | <strong>Total opex:</strong> ~1.7-2.0m</p>
+        <p style="margin: 2mm 0 0 0;"><strong>Digital spend:</strong> ~341k/yr | <strong>Targets flow through:</strong> 300 to 600 to 800 agents with subscriptions at 200/m</p>
+        <p style="margin: 2mm 0 0 0;"><strong>Assumptions:</strong> Avg selling price 320k; fee 1.0%; take 25% (Year 1) rising to 28% (Year 2-3); % active improves 70% to 75% to 80%; productivity 8 to 12 to 14 completions per active</p>
+    </div>
+    
+    <h2>3-Year Revenue Pathway</h2>
+    <div style="display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: 3mm; margin: 5mm 0;">
+        <div class="year-card">
+            <div class="year-label">Year 1</div>
+            <div class="year-revenue">~2.1M</div>
+            <div class="year-status">Break-even or Small +ve</div>
+        </div>
+        <div class="arrow-right">--></div>
+        <div class="year-card">
+            <div class="year-label">Year 2</div>
+            <div class="year-revenue">~6.3M</div>
+            <div class="year-status">Healthy +ve</div>
+        </div>
+        <div class="arrow-right">--></div>
+        <div class="year-card">
+            <div class="year-label">Year 3</div>
+            <div class="year-revenue">~10M</div>
+            <div class="year-status">Strong +ve</div>
+        </div>
+    </div>
+    
+    <h2>Detailed Model</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Year</th>
+                <th class="text-right">Agents (on file)</th>
+                <th class="text-right">% Active</th>
+                <th class="text-right">Active Agents</th>
+                <th class="text-right">Completions per Active</th>
+                <th class="text-right">Transactions (m)</th>
+                <th class="text-right">Subs (m)</th>
+                <th class="text-right">Total (m)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="bold">Year 1</td>
+                <td class="text-right">300</td>
+                <td class="text-right">70%</td>
+                <td class="text-right">210</td>
+                <td class="text-right">8</td>
+                <td class="text-right">1.34</td>
+                <td class="text-right">0.72</td>
+                <td class="text-right bold">2.06</td>
+            </tr>
+            <tr>
+                <td class="bold">Year 2</td>
+                <td class="text-right">600</td>
+                <td class="text-right">75%</td>
+                <td class="text-right">450</td>
+                <td class="text-right">12</td>
+                <td class="text-right">4.84</td>
+                <td class="text-right">1.44</td>
+                <td class="text-right bold">6.28</td>
+            </tr>
+            <tr style="background: var(--congs-cream);">
+                <td class="bold">Year 3</td>
+                <td class="text-right">800</td>
+                <td class="text-right">80%</td>
+                <td class="text-right">640</td>
+                <td class="text-right">14</td>
+                <td class="text-right">8.03</td>
+                <td class="text-right">1.92</td>
+                <td class="text-right bold">9.95</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <div class="two-col" style="margin-top: 5mm;">
+        <div>
+            <h3>Revenue per Completion Calculation</h3>
+            <div class="highlight-box" style="font-size: 9pt;">
+                <p style="margin: 0;"><strong>Take rate</strong> = company's share of the commission after paying the agent split and any upline/MLM overrides.</p>
+                <p style="margin: 2mm 0 0 0;"><strong>Revenue per completion</strong> = Average Selling Price x Fee % x Take rate</p>
+                <p style="margin: 2mm 0 0 0;"><strong>Example:</strong> 320k x 1.0% x 25% = 800 per completion (Year 1)</p>
+                <p style="margin: 2mm 0 0 0;">At 28% take: 320k x 1.0% x 28% = 896 per completion (Year 2-3)</p>
+            </div>
+        </div>
+        <div>
+            <h3>Sensitivity Analysis</h3>
+            <div class="insight-box">
+                <p style="margin: 0; font-size: 9pt;">At 1.0% fee and 320k ASP, revenue/completion is 800-896 depending on take rate. At realistic productivity (8 to 12 to 14 completions per active), we reach ~2.1m in Year 1, ~6.3m in Year 2, ~10m in Year 3.</p>
+                <p style="margin: 2mm 0 0 0; font-size: 9pt;"><strong>To hit 20m</strong> at 800 on-file (80% active = 640 actives), you'd need ~31.5 completions per active at 28% take - or ~29.4 at 30% take. This requires either more actives (~1,000 on-file) or higher productivity than Year 3 baseline.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="page-footer">
+        <span>CONGs | Distributor Growth Strategy Case Study</span>
+        <span>Page 7</span>
+    </div>
+</div>
+
+<!-- PAGE 8: How We Work -->
+<div class="page">
+    <h1>How We Work</h1>
+    
+    <h2>Our Approach</h2>
+    <div class="two-col">
+        <div>
+            <h3>1. Map the Funnel</h3>
+            <p>We start by mapping your entire recruitment or sales funnel, identifying where the biggest drop-offs occur and what conversion rates are achievable.</p>
+            
+            <h3>2. Calculate the Math</h3>
+            <p>Working backwards from your target, we calculate the required inputs at each stage - leads, budget, capacity - so you know exactly what it takes to hit your number.</p>
+            
+            <h3>3. Build the Scorecard</h3>
+            <p>We create a KPI framework with clear metrics and targets, so leadership has one place to track everything that matters.</p>
+            
+            <h3>4. Model the Revenue</h3>
+            <p>We build a financial model connecting activity to revenue, showing the pathway from current state to target state with explicit assumptions.</p>
+        </div>
+        <div>
+            <div class="highlight-box">
+                <h3>What This Client Received</h3>
+                <ul>
+                    <li>Website gap analysis (7 priority areas)</li>
+                    <li>Recruitment funnel model (5% conversion)</li>
+                    <li>Lead source strategy (440 leads/month)</li>
+                    <li>Budget allocation framework (~341k/year)</li>
+                    <li>KPI scorecard (7 pillars, 12-month targets)</li>
+                    <li>3-year revenue model (2M to 10M pathway)</li>
+                    <li>Agent-to-mentor progression analysis</li>
+                </ul>
+                <p style="font-size: 10pt; margin-top: 3mm; padding-top: 3mm; border-top: 1px solid var(--congs-navy); opacity: 0.8;"><strong>From messy recruitment data to clear growth roadmap in 3 weeks.</strong></p>
+            </div>
+        </div>
+    </div>
+    
+    <h2>What CONGs Stands For</h2>
+    <div class="scorecards" style="grid-template-columns: repeat(5, 1fr);">
+        <div class="scorecard" style="padding: 3mm;">
+            <div class="scorecard-value" style="font-size: 14pt;">C</div>
+            <div class="scorecard-label">Clarity</div>
+        </div>
+        <div class="scorecard" style="padding: 3mm;">
+            <div class="scorecard-value" style="font-size: 14pt;">O</div>
+            <div class="scorecard-label">Opportunity</div>
+        </div>
+        <div class="scorecard" style="padding: 3mm;">
+            <div class="scorecard-value" style="font-size: 14pt;">N</div>
+            <div class="scorecard-label">Numbers</div>
+        </div>
+        <div class="scorecard" style="padding: 3mm;">
+            <div class="scorecard-value" style="font-size: 14pt;">G</div>
+            <div class="scorecard-label">Growth</div>
+        </div>
+        <div class="scorecard" style="padding: 3mm;">
+            <div class="scorecard-value" style="font-size: 14pt;">s</div>
+            <div class="scorecard-label">Sustain</div>
+        </div>
+    </div>
+    
+    <div style="text-align: center; margin-top: 15mm;">
+        <img src="congs-logo.png" alt="CONGs" style="height: 40mm; width: auto;">
+    </div>
+    
+    <div class="highlight-box navy" style="text-align: center; padding: 8mm; margin-top: 8mm;">
+        <p style="font-size: 14pt; font-weight: 300; margin-bottom: 3mm;">Data In, Decisions Out</p>
+        <p style="font-size: 11pt; margin: 0; opacity: 0.9;">We help SMEs turn messy data into clear revenue actions.</p>
+    </div>
+    
+    <div style="text-align: center; margin-top: 8mm;">
+        <p style="font-size: 11pt; margin-bottom: 2mm;"><strong>Olga Sakka</strong></p>
+        <p style="font-size: 10pt; color: var(--congs-navy);">olga.sakka@congs.co.uk | www.congs.co.uk</p>
+    </div>
+    
+    <div class="page-footer">
+        <span>CONGs | Distributor Growth Strategy Case Study</span>
+        <span>Page 8</span>
+    </div>
+</div>
+
+</body>
+</html>
+
