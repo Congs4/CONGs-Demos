@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CONGs - Customer Segmentation Case Study</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            /* Cluster-specific colors */
+            --high-value: #500050;
+            --budget-care: #66B2B2;
+            --med-spenders: #FFF4A3;
+            
+            /* Base colors */
+            --congs-navy: #2A3C47;
+            --congs-cream: #EBE7D9;
+            --congs-light: #FFF5D0;
+            --congs-white: #FFFFFF;
+            --congs-text: #2A3C47;
+            --positive: #2D6A4F;
+            --negative: #9B2C2C;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        @page {
+            size: A4;
+            margin: 0;
+        }
+        
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--congs-white);
+            color: var(--congs-text);
+            line-height: 1.6;
+            font-size: 11pt;
+        }
+        
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 20mm;
+            margin: 0 auto;
+            background: var(--congs-white);
+            page-break-after: always;
+            position: relative;
+        }
+        
+        .page:last-child {
+            page-break-after: auto;
+        }
+        
+        /* Cover Page */
+        .cover {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, var(--congs-navy) 0%, #1a2529 100%);
+            color: var(--congs-cream);
+            padding: 40mm;
+            text-align: center;
+        }
+        
+        .cover-logo {
+            height: 25mm;
+            width: auto;
+            margin-bottom: 15mm;
+        }
+        
+        .cover-title {
+            font-size: 32pt;
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 8mm;
+            color: white;
+        }
+        
+        .cover-subtitle {
+            font-size: 16pt;
+            font-weight: 300;
+            opacity: 0.9;
+            margin-bottom: 15mm;
+        }
+        
+        .cover-credentials {
+            font-size: 12pt;
+            font-weight: 300;
+            opacity: 0.8;
+            margin-top: 10mm;
+            padding-top: 10mm;
+            border-top: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        .cover-date {
+            position: absolute;
+            bottom: 20mm;
+            left: 40mm;
+            right: 40mm;
+            font-size: 10pt;
+            opacity: 0.6;
+            text-align: center;
+        }
+        
+        /* Section Headers */
+        h1 {
+            font-size: 20pt;
+            font-weight: 600;
+            color: var(--congs-navy);
+            margin-bottom: 6mm;
+            padding-bottom: 3mm;
+            border-bottom: 2px solid var(--congs-cream);
+        }
+        
+        h2 {
+            font-size: 14pt;
+            font-weight: 600;
+            color: var(--congs-navy);
+            margin: 6mm 0 4mm 0;
+        }
+        
+        h3 {
+            font-size: 11pt;
+            font-weight: 600;
+            color: var(--congs-navy);
+            margin: 4mm 0 2mm 0;
+        }
+        
+        p {
+            margin-bottom: 3mm;
+            text-align: left;
+        }
+        
+        /* Cluster Color Boxes */
+        .cluster-box {
+            padding: 4mm;
+            border-radius: 2mm;
+            margin: 3mm 0;
+            border-left: 4px solid;
+        }
+        
+        .cluster-high-value {
+            background: rgba(80, 0, 80, 0.1);
+            border-color: var(--high-value);
+        }
+        
+        .cluster-budget-care {
+            background: rgba(102, 178, 178, 0.1);
+            border-color: var(--budget-care);
+        }
+        
+        .cluster-med-spenders {
+            background: rgba(255, 244, 163, 0.3);
+            border-color: #E6D473;
+        }
+        
+        .cluster-header {
+            font-size: 12pt;
+            font-weight: 700;
+            margin-bottom: 2mm;
+        }
+        
+        .cluster-high-value .cluster-header { color: var(--high-value); }
+        .cluster-budget-care .cluster-header { color: var(--budget-care); }
+        .cluster-med-spenders .cluster-header { color: #856404; }
+        
+        /* Highlight Box */
+        .highlight-box {
+            background: var(--congs-cream);
+            padding: 5mm;
+            border-radius: 2mm;
+            margin: 5mm 0;
+        }
+        
+        .highlight-box.navy {
+            background: var(--congs-navy);
+            color: var(--congs-cream);
+        }
+        
+        /* Scorecards */
+        .scorecards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4mm;
+            margin: 5mm 0;
+        }
+        
+        .scorecard {
+            background: var(--congs-cream);
+            padding: 4mm;
+            border-radius: 2mm;
+            text-align: center;
+        }
+        
+        .scorecard-value {
+            font-size: 18pt;
+            font-weight: 700;
+            color: var(--congs-navy);
+        }
+        
+        .scorecard-label {
+            font-size: 8pt;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--congs-navy);
+            opacity: 0.7;
+            margin-top: 1mm;
+        }
+        
+        .positive { color: var(--positive); }
+        .negative { color: var(--negative); }
+        
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 9pt;
+            margin: 4mm 0;
+        }
+        
+        th {
+            background: var(--congs-navy);
+            color: var(--congs-cream);
+            padding: 2.5mm 3mm;
+            text-align: left;
+            font-weight: 600;
+            font-size: 8pt;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        td {
+            padding: 2.5mm 3mm;
+            border-bottom: 1px solid var(--congs-cream);
+        }
+        
+        .text-right { text-align: right; }
+        .text-center { text-align: center; }
+        .bold { font-weight: 600; }
+        
+        /* Two Column Layout */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6mm;
+        }
+        
+        .three-col {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4mm;
+        }
+        
+        /* Insight Box */
+        .insight-box {
+            background: var(--congs-light);
+            border-left: 3px solid var(--congs-navy);
+            padding: 4mm;
+            margin: 4mm 0;
+        }
+        
+        .insight-label {
+            font-size: 8pt;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--congs-navy);
+            margin-bottom: 2mm;
+        }
+        
+        /* Action Box */
+        .action-box {
+            background: var(--congs-navy);
+            color: var(--congs-cream);
+            padding: 4mm;
+            border-radius: 2mm;
+            margin: 3mm 0;
+        }
+        
+        .action-label {
+            font-size: 8pt;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.8;
+            margin-bottom: 1mm;
+        }
+        
+        /* Lists */
+        ul, ol {
+            margin: 3mm 0 3mm 5mm;
+            padding-left: 0;
+        }
+        
+        li {
+            margin-bottom: 2mm;
+            padding-left: 2mm;
+        }
+        
+        /* Footer */
+        .page-footer {
+            position: absolute;
+            bottom: 10mm;
+            left: 20mm;
+            right: 20mm;
+            display: flex;
+            justify-content: space-between;
+            font-size: 8pt;
+            color: var(--congs-navy);
+            opacity: 0.5;
+            border-top: 1px solid var(--congs-cream);
+            padding-top: 3mm;
+        }
+        
+        /* Page 8 - make the closing block feel balanced */
+        .how-work-grid {
+            margin-bottom: 12mm; /* keep clear of footer */
+            align-items: start;
+        }
+
+        .how-work-right {
+            display: flex;
+            flex-direction: column;
+            gap: 4mm;
+            justify-content: flex-start;
+        }
+
+        .how-work-logo-wrap {
+            text-align: center;
+            margin-top: 0;
+        }
+
+        .how-work-logo {
+            max-width: 90mm;
+            max-height: 26mm;
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .contact-card {
+            background: #F6F3EA;
+            border: 1px solid var(--congs-cream);
+            border-radius: 2mm;
+            padding: 4mm;
+            text-align: center;
+        }
+
+        .contact-name {
+            font-size: 12pt;
+            font-weight: 700;
+            margin-bottom: 1mm;
+            color: var(--congs-navy);
+        }
+
+        .contact-details {
+            font-size: 10pt;
+            color: var(--congs-navy);
+            opacity: 0.85;
+        }
+
+        /* Tags */
+        .tag {
+            display: inline-block;
+            padding: 1mm 2.5mm;
+            border-radius: 1mm;
+            font-size: 7pt;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        
+        .tag-high-value { background: rgba(80, 0, 80, 0.2); color: var(--high-value); }
+        .tag-budget-care { background: rgba(102, 178, 178, 0.2); color: var(--budget-care); }
+        .tag-med-spenders { background: rgba(255, 244, 163, 0.5); color: #856404; }
+        
+        /* Importance Ratio Visualization */
+        .importance-bar {
+            height: 8mm;
+            border-radius: 1mm;
+            display: flex;
+            align-items: center;
+            padding: 0 3mm;
+            color: white;
+            font-weight: 600;
+            font-size: 9pt;
+            margin: 2mm 0;
+        }
+        
+        .importance-high-value { background: var(--high-value); }
+        .importance-budget-care { background: var(--budget-care); }
+        .importance-med-spenders { background: #E6D473; color: var(--congs-navy); }
+
+        /* Importance bars with non-truncated labels (label + track + fill) */
+        .importance-row {
+            display: grid;
+            grid-template-columns: 44mm 1fr;
+            gap: 3mm;
+            align-items: center;
+            margin: 2mm 0;
+        }
+
+        .importance-label {
+            font-size: 9pt;
+            font-weight: 600;
+            color: var(--congs-navy);
+            white-space: nowrap;
+        }
+
+        .importance-track {
+            height: 8mm;
+            background: #EEF2F4;
+            border-radius: 1mm;
+            overflow: hidden;
+        }
+
+        .importance-fill {
+            height: 100%;
+        }
+        
+        /* ROI Cards */
+        .roi-card {
+            padding: 4mm;
+            border-radius: 2mm;
+            margin: 3mm 0;
+        }
+        
+        .roi-high-value { background: rgba(80, 0, 80, 0.1); border-left: 4px solid var(--high-value); }
+        .roi-budget-care { background: rgba(102, 178, 178, 0.1); border-left: 4px solid var(--budget-care); }
+        .roi-med-spenders { background: rgba(255, 244, 163, 0.3); border-left: 4px solid #E6D473; }
+        
+        .roi-value {
+            font-size: 20pt;
+            font-weight: 700;
+            margin: 2mm 0;
+        }
+        
+        .roi-high-value .roi-value { color: var(--high-value); }
+        .roi-budget-care .roi-value { color: var(--budget-care); }
+        .roi-med-spenders .roi-value { color: #856404; }
+        
+        /* Print Optimization */
+        @media print {
+            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .page { margin: 0; box-shadow: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- PAGE 1: Cover -->
+<div class="page cover">
+    <img src="congs-logo.png" alt="CONGs" class="cover-logo">
+    
+    <div class="cover-title">Customer-Centric<br>Segmentation Analysis</div>
+    <div class="cover-subtitle">Leveraging Data Science to Optimize Marketing ROI</div>
+    
+    <div class="cover-credentials">
+        MIT Applied Data Science Program<br>
+        Capstone Project
+    </div>
+    
+    <div class="cover-date">August 2024 | www.congs.co.uk</div>
+</div>
+
+<!-- PAGE 2: Executive Summary -->
+<div class="page">
+    <h1>Executive Summary</h1>
+    
+    <p>A multi-channel retailer needed to enhance marketing strategy efficiency by identifying actionable customer segments. The challenge was creating meaningful, distinct, and manageable segments that would enable targeted marketing actions and drive revenue growth.</p>
+    
+    <h2>The Objective</h2>
+    <div class="highlight-box navy">
+        <p style="font-size: 12pt; margin: 0;"><strong>Leverage Data Science Unsupervised Learning and Clustering Algorithms</strong> to identify customer segments that are manageable, big enough to warrant resource allocation, and distinct enough to clearly dictate different marketing actions.</p>
+    </div>
+    
+    <h2>Key Findings</h2>
+    <div class="three-col">
+        <div class="cluster-box cluster-high-value">
+            <div class="cluster-header">High Value</div>
+            <p style="font-size: 9pt; margin: 0;"><strong>20%</strong> of customer base</p>
+            <p style="font-size: 8pt; margin: 1mm 0 0 0;">High income, high spending, highest response rate to campaigns</p>
+            <p style="font-size: 9pt; margin-top: 2mm; font-weight: 600;">48% of total revenue</p>
+        </div>
+        <div class="cluster-box cluster-budget-care">
+            <div class="cluster-header">Budget Care</div>
+            <p style="font-size: 9pt; margin: 0;"><strong>43%</strong> of customer base</p>
+            <p style="font-size: 8pt; margin: 1mm 0 0 0;">Low income, low spending, high web engagement</p>
+            <p style="font-size: 9pt; margin-top: 2mm; font-weight: 600;">6% of total revenue</p>
+        </div>
+        <div class="cluster-box cluster-med-spenders">
+            <div class="cluster-header">Med Spenders</div>
+            <p style="font-size: 9pt; margin: 0;"><strong>37%</strong> of customer base</p>
+            <p style="font-size: 8pt; margin: 1mm 0 0 0;">Moderate income/spending, preference for deals</p>
+            <p style="font-size: 9pt; margin-top: 2mm; font-weight: 600;">46% of total revenue</p>
+        </div>
+    </div>
+    
+    <h2>Business Impact</h2>
+    <ul>
+        <li><strong>Potential Revenue Boost:</strong> 10-15% increase through efficient segmentation</li>
+        <li><strong>Resource Optimization:</strong> Targeted marketing strategies reduce waste and improve ROI</li>
+        <li><strong>Actionable Insights:</strong> Clear customer profiles enable tailored product offerings and promotions</li>
+        <li><strong>Framework for Growth:</strong> Test-and-learn approach allows refinement as customer behaviors evolve</li>
+    </ul>
+    
+    <div class="insight-box" style="margin-top: 5mm;">
+        <div class="insight-label">Key Insight</div>
+        <p style="margin: 0;">The High Value segment (20% of customers) contributes 48% of revenue - a 2.4x importance ratio. This disproportionate contribution highlights the critical need for targeted retention and growth strategies.</p>
+    </div>
+    
+    <div class="page-footer">
+        <span>CONGs | Customer Segmentation Case Study</span>
+        <span>Page 2</span>
+    </div>
+</div>
+
+<!-- PAGE 3: Why Segmentation Matters -->
+<div class="page">
+    <h1>Why Customer Segmentation Matters</h1>
+    
+    <p>Customer segmentation empowers businesses to move beyond one-size-fits-all marketing and create tailored strategies that drive measurable results.</p>
+    
+    <h2>Five Key Benefits</h2>
+    <div class="two-col">
+        <div>
+            <div class="highlight-box" style="border-left: 4px solid var(--budget-care); margin-bottom: 3mm;">
+                <h3>Empowerment</h3>
+                <p style="font-size: 9pt; margin: 0;">Empowers marketing and sales departments with information about customer needs and motivations</p>
+            </div>
+            
+            <div class="highlight-box" style="border-left: 4px solid var(--high-value); margin-bottom: 3mm;">
+                <h3>Enhanced Marketing Strategies</h3>
+                <p style="font-size: 9pt; margin: 0;">Enables tailored product and service offerings to specific customer groups</p>
+            </div>
+            
+            <div class="highlight-box" style="border-left: 4px solid var(--med-spenders);">
+                <h3>Increased Satisfaction</h3>
+                <p style="font-size: 9pt; margin: 0;">Improved customer experience and satisfaction as a result of targeted approaches</p>
+            </div>
+        </div>
+        
+        <div>
+            <div class="highlight-box" style="border-left: 4px solid var(--budget-care); margin-bottom: 3mm;">
+                <h3>Sales Growth</h3>
+                <p style="font-size: 9pt; margin: 0;">Customer sales maintained or increased over time due to repeated purchasing activity</p>
+            </div>
+            
+            <div class="highlight-box" style="border-left: 4px solid var(--high-value);">
+                <h3>Loyalty & Retention</h3>
+                <p style="font-size: 9pt; margin: 0;">Drives customer retention and business growth achievement</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="action-box" style="margin-top: 5mm;">
+        <div class="action-label">The Bottom Line</div>
+        <p style="margin: 0; font-size: 11pt; text-align: center; font-weight: 600;">OPTIMISING ALLOCATED RESOURCES AND INCREASING ROI</p>
+    </div>
+    
+    <h2>The Challenge</h2>
+    <div class="two-col">
+        <div>
+            <h3>Business Requirements</h3>
+            <ul style="font-size: 10pt;">
+                <li>The number of segments should be manageable to avoid complexity</li>
+                <li>Segments should be big enough to warrant resource allocation</li>
+                <li>Segments should be distinct and meaningful enough to clearly dictate different marketing actions</li>
+            </ul>
+        </div>
+        <div>
+            <h3>Data Science Approach</h3>
+            <ul style="font-size: 10pt;">
+                <li>Use unsupervised learning algorithms (clustering)</li>
+                <li>Balance statistical rigor with practical business application</li>
+                <li>Create interpretable results for non-technical stakeholders</li>
+                <li>Enable dynamic adjustment as customer behaviors evolve</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="page-footer">
+        <span>CONGs | Customer Segmentation Case Study</span>
+        <span>Page 3</span>
+    </div>
+</div>
+
+<!-- PAGE 4: Exploratory Data Analysis -->
+<div class="page">
+    <h1>Exploratory Data Analysis</h1>
+    
+    <p>Before clustering, we analyzed the dataset to understand key patterns and relationships that would inform our segmentation approach.</p>
+    
+    <h2>Key Highlights</h2>
+    <div class="highlight-box">
+        <ul style="font-size: 10pt;">
+            <li><strong>Income-Spending Correlation:</strong> Higher income is linked to increased spending across categories. High-income customers make more purchases via catalogues and web.</li>
+            <li><strong>Family Size Impact:</strong> Larger households tend to spend less, particularly on products like wines.</li>
+            <li><strong>Marketing Campaign Effectiveness:</strong> Generally low acceptance rates for marketing campaigns with limited correlation to other factors.</li>
+            <li><strong>Digital Behavior:</strong> High web visits do not translate to high purchases - negative correlation between web visits and overall expenses, suggesting opportunity to improve online conversion rates.</li>
+            <li><strong>Purchase Channels:</strong> Strong correlation between total purchases and purchases made through catalogue/store channels.</li>
+        </ul>
+    </div>
+    
+    <h2>Key Correlations Identified</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Relationship</th>
+                <th>Correlation</th>
+                <th>Business Implication</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="bold">Income → Spending</td>
+                <td class="text-right positive">+0.73</td>
+                <td>High-income customers drive revenue - focus retention efforts here</td>
+            </tr>
+            <tr>
+                <td class="bold">Income → Catalogue Purchases</td>
+                <td class="text-right positive">+0.71</td>
+                <td>Catalogue channel effective for high-value customers</td>
+            </tr>
+            <tr>
+                <td class="bold">Web Visits → Spending</td>
+                <td class="text-right negative">-0.54</td>
+                <td>High web traffic but low conversion - optimization opportunity</td>
+            </tr>
+            <tr>
+                <td class="bold">Family Size → Spending</td>
+                <td class="text-right negative">-0.50</td>
+                <td>Larger families spend less - may need budget-friendly offers</td>
+            </tr>
+            <tr>
+                <td class="bold">Campaign Acceptance → Other Factors</td>
+                <td class="text-right">Weak</td>
+                <td>Campaigns not well-targeted - segmentation can improve this</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <div class="insight-box" style="margin-top: 5mm;">
+        <div class="insight-label">Critical Finding</div>
+        <p style="margin: 0;">The negative correlation between web visits and spending reveals a significant conversion gap. Customers are engaging online but not purchasing - this represents a major opportunity for the Budget Care segment, which shows high web engagement but low spending.</p>
+    </div>
+    
+    <div class="page-footer">
+        <span>CONGs | Customer Segmentation Case Study</span>
+        <span>Page 4</span>
+    </div>
+</div>
+
+<!-- PAGE 5: Cluster Profiling -->
+<div class="page">
+    <h1>Customer Cluster Profiling</h1>
+    
+    <p>Using Hierarchical Clustering (Ward Linkage), we identified three distinct customer segments, each with unique characteristics and marketing implications.</p>
+    
+    <div class="cluster-box cluster-high-value">
+        <div class="cluster-header">HIGH VALUE - 20% of Customer Base</div>
+        <div class="two-col" style="gap: 3mm; margin-top: 2mm;">
+            <div>
+                <p style="font-size: 9pt; margin-bottom: 1mm;"><strong>Profile:</strong></p>
+                <ul style="font-size: 8pt; margin: 0;">
+                    <li>High income (avg. $76K)</li>
+                    <li>Small family size</li>
+                    <li>High spending (avg. $1,487)</li>
+                    <li>Highly engaged (585 days tenure)</li>
+                    <li>High campaign response (21%)</li>
+                </ul>
+            </div>
+            <div>
+                <p style="font-size: 9pt; margin-bottom: 1mm;"><strong>Behavior:</strong></p>
+                <ul style="font-size: 8pt; margin: 0;">
+                    <li>Highest average spending: $77 per purchase</li>
+                    <li>Balanced multi-channel: store, catalogue, web</li>
+                    <li>21 purchases per customer</li>
+                    <li><strong>48% of total revenue</strong></li>
+                </ul>
+            </div>
+        </div>
+        <div class="action-box" style="margin-top: 3mm; background: rgba(80, 0, 80, 0.2); color: var(--high-value);">
+            <div class="action-label" style="color: var(--high-value);">Recommended Actions</div>
+            <ul style="font-size: 8pt; margin: 0; color: var(--congs-navy);">
+                <li>Enhance omni-channel experience to drive incremental purchases</li>
+                <li>Target with premium products and services</li>
+                <li>Implement points-based incentive to reward campaign participation</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="cluster-box cluster-budget-care">
+        <div class="cluster-header">BUDGET CARE - 43% of Customer Base</div>
+        <div class="two-col" style="gap: 3mm; margin-top: 2mm;">
+            <div>
+                <p style="font-size: 9pt; margin-bottom: 1mm;"><strong>Profile:</strong></p>
+                <ul style="font-size: 8pt; margin: 0;">
+                    <li>Low income (avg. $34K)</li>
+                    <li>Large family size</li>
+                    <li>Minimal spending (avg. $84)</li>
+                    <li>Lower engagement (503 days)</li>
+                    <li>Lowest campaign acceptance</li>
+                </ul>
+            </div>
+            <div>
+                <p style="font-size: 9pt; margin-bottom: 1mm;"><strong>Behavior:</strong></p>
+                <ul style="font-size: 8pt; margin: 0;">
+                    <li>Highest web visits (6 times/month)</li>
+                    <li>Low conversion rate</li>
+                    <li>Store and web channels primarily</li>
+                    <li>7 purchases per customer</li>
+                    <li><strong>6% of total revenue</strong></li>
+                </ul>
+            </div>
+        </div>
+        <div class="action-box" style="margin-top: 3mm; background: rgba(102, 178, 178, 0.2); color: var(--budget-care);">
+            <div class="action-label" style="color: var(--budget-care);">Recommended Actions</div>
+            <ul style="font-size: 8pt; margin: 0; color: var(--congs-navy);">
+                <li>Create web-specific, limited-time offers to convert traffic to orders</li>
+                <li>Develop targeted promotions and discounts</li>
+                <li>Introduce budget-friendly "recommend a friend" and gamification initiatives</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="cluster-box cluster-med-spenders">
+        <div class="cluster-header">MED SPENDERS - 37% of Customer Base</div>
+        <div class="two-col" style="gap: 3mm; margin-top: 2mm;">
+            <div>
+                <p style="font-size: 9pt; margin-bottom: 1mm;"><strong>Profile:</strong></p>
+                <ul style="font-size: 8pt; margin: 0;">
+                    <li>Moderate income (avg. $59K)</li>
+                    <li>Moderate family size</li>
+                    <li>Significant spending (avg. $750)</li>
+                    <li>Moderate engagement (559 days)</li>
+                    <li>Moderately responsive to campaigns</li>
+                </ul>
+            </div>
+            <div>
+                <p style="font-size: 9pt; margin-bottom: 1mm;"><strong>Behavior:</strong></p>
+                <ul style="font-size: 8pt; margin: 0;">
+                    <li>Highest number of deals purchases</li>
+                    <li>Prefer web and store purchases</li>
+                    <li>20 purchases per customer</li>
+                    <li>Oldest customer group (long-term loyalty)</li>
+                    <li><strong>46% of total revenue</strong></li>
+                </ul>
+            </div>
+        </div>
+        <div class="action-box" style="margin-top: 3mm; background: rgba(255, 244, 163, 0.5); color: #856404;">
+            <div class="action-label" style="color: #856404;">Recommended Actions</div>
+            <ul style="font-size: 8pt; margin: 0; color: var(--congs-navy);">
+                <li>Develop profile-appropriate campaigns and "long-term customer" benefits</li>
+                <li>Implement targeted offers to prevent churn</li>
+                <li>Encourage multi-channel purchasing through enhanced omni-channel experience</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="page-footer">
+        <span>CONGs | Customer Segmentation Case Study</span>
+        <span>Page 5</span>
+    </div>
+</div>
+
+<!-- PAGE 6: Cluster Analysis Highlights -->
+<div class="page">
+    <h1>Cluster Analysis Highlights</h1>
+    
+    <p>Detailed analysis of spending patterns and channel preferences reveals distinct behaviors that inform targeted marketing strategies.</p>
+    
+    <h2>Spending Analysis</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Segment</th>
+                <th class="text-right">Volume of Purchases</th>
+                <th class="text-right">Value per Purchase</th>
+                <th class="text-right">Avg Spending per Customer</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr style="background: rgba(80, 0, 80, 0.1);">
+                <td class="bold">High Value</td>
+                <td class="text-right">21</td>
+                <td class="text-right">$77.44</td>
+                <td class="text-right bold">$1,487</td>
+            </tr>
+            <tr style="background: rgba(102, 178, 178, 0.1);">
+                <td class="bold">Budget Care</td>
+                <td class="text-right">7</td>
+                <td class="text-right">$10.31</td>
+                <td class="text-right">$84</td>
+            </tr>
+            <tr style="background: rgba(255, 244, 163, 0.3);">
+                <td class="bold">Med Spenders</td>
+                <td class="text-right">20</td>
+                <td class="text-right">$36.74</td>
+                <td class="text-right bold">$750</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <h2>Channel Preferences</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Segment</th>
+                <th class="text-right">Web Engagement</th>
+                <th class="text-right">Store Purchases</th>
+                <th class="text-right">Catalogue Purchases</th>
+                <th class="text-right">Deals Engagement</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr style="background: rgba(80, 0, 80, 0.1);">
+                <td class="bold">High Value</td>
+                <td class="text-right">26%</td>
+                <td class="text-right">39%</td>
+                <td class="text-right">29%</td>
+                <td class="text-right">6%</td>
+            </tr>
+            <tr style="background: rgba(102, 178, 178, 0.1);">
+                <td class="bold">Budget Care</td>
+                <td class="text-right">26%</td>
+                <td class="text-right">42%</td>
+                <td class="text-right">6%</td>
+                <td class="text-right">26%</td>
+            </tr>
+            <tr style="background: rgba(255, 244, 163, 0.3);">
+                <td class="bold">Med Spenders</td>
+                <td class="text-right">29%</td>
+                <td class="text-right">38%</td>
+                <td class="text-right">17%</td>
+                <td class="text-right">16%</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <h2>Key Insights</h2>
+    <div class="two-col">
+        <div>
+            <div class="insight-box">
+                <div class="insight-label">High Value Segment</div>
+                <p style="margin: 0; font-size: 9pt;">Balanced multi-channel behavior with strong catalogue preference (29%). This segment values convenience and variety - omni-channel enhancement can drive incremental purchases.</p>
+            </div>
+            
+            <div class="insight-box">
+                <div class="insight-label">Budget Care Segment</div>
+                <p style="margin: 0; font-size: 9pt;">High web engagement (26%) but lowest catalogue use (6%). Strong deals engagement (26%) shows price sensitivity. Web-specific offers can convert traffic to sales.</p>
+            </div>
+        </div>
+        <div>
+            <div class="insight-box">
+                <div class="insight-label">Med Spenders Segment</div>
+                <p style="margin: 0; font-size: 9pt;">Highest deals engagement (16%) combined with moderate web/store usage. This segment responds to promotions - targeted offers can prevent churn and drive retention.</p>
+            </div>
+            
+            <div class="action-box">
+                <div class="action-label">Strategic Implication</div>
+                <p style="margin: 0; font-size: 9pt;">Channel preferences vary significantly by segment. Marketing strategies must align with each segment's preferred channels to maximize effectiveness and ROI.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="page-footer">
+        <span>CONGs | Customer Segmentation Case Study</span>
+        <span>Page 6</span>
+    </div>
+</div>
+
+<!-- PAGE 7: Business Importance & ROI -->
+<div class="page">
+    <h1>Business Importance & ROI Analysis</h1>
+    
+    <p>The "Importance Ratio" shows how much revenue each cluster contributes relative to its size - revealing which segments deserve the most strategic attention.</p>
+    
+    <h2>Importance Ratio Analysis</h2>
+    <div class="two-col">
+        <div>
+            <h3>% of Customers</h3>
+            <div class="importance-row">
+                <div class="importance-label">High Value: 20%</div>
+                <div class="importance-track"><div class="importance-fill importance-high-value" style="width: 20%;"></div></div>
+            </div>
+            <div class="importance-row">
+                <div class="importance-label">Budget Care: 43%</div>
+                <div class="importance-track"><div class="importance-fill importance-budget-care" style="width: 43%;"></div></div>
+            </div>
+            <div class="importance-row">
+                <div class="importance-label">Med Spenders: 37%</div>
+                <div class="importance-track"><div class="importance-fill importance-med-spenders" style="width: 37%;"></div></div>
+            </div>
+            
+            <h3 style="margin-top: 5mm;">% of Revenue</h3>
+            <div class="importance-row">
+                <div class="importance-label">High Value: 48%</div>
+                <div class="importance-track"><div class="importance-fill importance-high-value" style="width: 48%;"></div></div>
+            </div>
+            <div class="importance-row">
+                <div class="importance-label">Budget Care: 6%</div>
+                <div class="importance-track"><div class="importance-fill importance-budget-care" style="width: 6%;"></div></div>
+            </div>
+            <div class="importance-row">
+                <div class="importance-label">Med Spenders: 46%</div>
+                <div class="importance-track"><div class="importance-fill importance-med-spenders" style="width: 46%;"></div></div>
+            </div>
+            
+            <h3 style="margin-top: 5mm;">Importance Ratio</h3>
+            <div class="importance-row">
+                <div class="importance-label">High Value: 2.40</div>
+                <div class="importance-track"><div class="importance-fill importance-high-value" style="width: 100%;"></div></div>
+            </div>
+            <div class="importance-row">
+                <div class="importance-label">Budget Care: 0.14</div>
+                <div class="importance-track"><div class="importance-fill importance-budget-care" style="width: 14%;"></div></div>
+            </div>
+            <div class="importance-row">
+                <div class="importance-label">Med Spenders: 1.25</div>
+                <div class="importance-track"><div class="importance-fill importance-med-spenders" style="width: 52%;"></div></div>
+            </div>
+        </div>
+        <div>
+            <div class="highlight-box navy">
+                <h3 style="color: var(--congs-light);">What This Means</h3>
+                <p style="font-size: 10pt; margin: 3mm 0;">The Importance Ratio shows revenue contribution relative to segment size:</p>
+                <ul style="font-size: 9pt; margin: 0;">
+                    <li><strong>High Value (2.40):</strong> Contributes disproportionately high revenue - clearly the most valuable segment</li>
+                    <li><strong>Med Spenders (1.25):</strong> Contributes slightly more than proportional size - also valuable</li>
+                    <li><strong>Budget Care (0.14):</strong> Largest in size but contributes least to revenue - needs conversion optimization</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <h2>Proposed Actions with ROI Analysis</h2>
+    <div class="three-col">
+        <div class="roi-card roi-high-value">
+            <h3 style="color: var(--high-value);">High Value</h3>
+            <p style="font-size: 8pt; margin-bottom: 2mm;">435 customers | Enhanced omni-channel</p>
+            <div class="roi-value">128% ROI</div>
+            <p style="font-size: 8pt; margin: 2mm 0;"><strong>Cost:</strong> $40k IT infrastructure</p>
+            <p style="font-size: 8pt; margin: 0;"><strong>Benefit:</strong> $91,350 additional revenue</p>
+        </div>
+        <div class="roi-card roi-budget-care">
+            <h3 style="color: var(--budget-care);">Budget Care</h3>
+            <p style="font-size: 8pt; margin-bottom: 2mm;">962 customers | Online discount offers</p>
+            <div class="roi-value">233% ROI</div>
+            <p style="font-size: 8pt; margin: 2mm 0;"><strong>Cost:</strong> $1,443 discounts</p>
+            <p style="font-size: 8pt; margin: 0;"><strong>Benefit:</strong> $4,810 additional revenue</p>
+        </div>
+        <div class="roi-card roi-med-spenders">
+            <h3 style="color: #856404;">Med Spenders</h3>
+            <p style="font-size: 8pt; margin-bottom: 2mm;">830 customers | Long-term tenure program</p>
+            <div class="roi-value">125% ROI</div>
+            <p style="font-size: 8pt; margin: 2mm 0;"><strong>Cost:</strong> $8,300 program</p>
+            <p style="font-size: 8pt; margin: 0;"><strong>Benefit:</strong> $18,675 additional revenue</p>
+        </div>
+    </div>
+    
+    <div class="insight-box" style="margin-top: 5mm;">
+        <div class="insight-label">Key Finding</div>
+        <p style="margin: 0;">All three segments show positive ROI when targeted with appropriate strategies. The Budget Care segment, despite low current revenue contribution, shows the highest ROI (233%) when targeted with web-specific discount offers - highlighting the conversion opportunity.</p>
+    </div>
+    
+    <div class="page-footer">
+        <span>CONGs | Customer Segmentation Case Study</span>
+        <span>Page 7</span>
+    </div>
+</div>
+
+<!-- PAGE 8: Solution Design & How We Work -->
+<div class="page">
+    <h1>Solution Design & Implementation</h1>
+    
+    <h2>Why Hierarchical Clustering?</h2>
+    <div class="two-col">
+        <div>
+            <h3>What Solution</h3>
+            <ul style="font-size: 10pt;">
+                <li><strong>Primary:</strong> Hierarchical Clustering with 3 clusters</li>
+                <li><strong>Complementary:</strong> GMM, K-means micro-segmenting check</li>
+                <li><strong>Result:</strong> Distinct groups: High Value, Budget Care, Med Spenders</li>
+            </ul>
+            
+            <h3>Why We Chose It</h3>
+            <ul style="font-size: 10pt;">
+                <li><strong>Flexibility:</strong> Adjustable segmentation using HC dendrogram</li>
+                <li><strong>Interpretability:</strong> Clear, distinct segments for non-technical stakeholders</li>
+                <li><strong>Actionable Insights:</strong> Well-distributed clusters (20%, 43%, 37%)</li>
+            </ul>
+        </div>
+        <div>
+            <h3>Which Problems It Solves</h3>
+            <ul style="font-size: 10pt;">
+                <li>Addresses business needs for both high-level strategy and detailed targeting</li>
+                <li>Balances statistical rigor with practical business application</li>
+                <li>Allows adaptation as customer behaviors evolve</li>
+                <li>Supports segmented, focused marketing approaches</li>
+            </ul>
+            
+            <h3>How It Impacts</h3>
+            <ul style="font-size: 10pt;">
+                <li>Enables targeted marketing strategies for each segment</li>
+                <li>Improves resource allocation efficiency</li>
+                <li>Facilitates tailored product offerings and promotions</li>
+                <li>Increases customer lifetime value</li>
+            </ul>
+        </div>
+    </div>
+    
+    <h2>Key Recommendations</h2>
+    <div class="highlight-box">
+        <ul style="font-size: 10pt;">
+            <li><strong>Start Small:</strong> Design high-impact, low-risk strategies for each segment (cross-sell, seasonal promotions, website enhancements)</li>
+            <li><strong>Test & Learn:</strong> Implement test-and-learn approach to refine segmentation over time</li>
+            <li><strong>Involve IT:</strong> Ensure systems and infrastructure can support segmented initiatives</li>
+            <li><strong>Build Action Plans:</strong> Create detailed expectations and KPIs for each segment</li>
+            <li><strong>Consider Micro-segmentation:</strong> Explore potential for sub-segments within the three main clusters for even more targeted marketing</li>
+        </ul>
+    </div>
+    
+    <h2>How We Work</h2>
+    <div class="two-col how-work-grid">
+        <div>
+            <h3>Our Approach</h3>
+            <p style="font-size: 10pt;">We combine data science rigor with business practicality. Every analysis answers "So what?" and "What do I do?" - turning complex algorithms into clear, actionable strategies.</p>
+            
+            <div class="action-box" style="margin-top: 3mm;">
+                <div class="action-label">What This Client Received</div>
+                <ul style="font-size: 9pt; margin: 0;">
+                    <li>Customer segmentation analysis (3 distinct clusters)</li>
+                    <li>Cluster profiling with actionable recommendations</li>
+                    <li>ROI analysis for targeted marketing strategies</li>
+                    <li>Implementation roadmap with risks and opportunities</li>
+                    <li>Framework for ongoing refinement</li>
+                </ul>
+            </div>
+        </div>
+        <div class="how-work-right">
+            <div class="how-work-logo-wrap">
+                <img src="congs-logo.png" alt="CONGs" class="how-work-logo">
+            </div>
+            
+            <div class="highlight-box navy" style="text-align: center; padding: 7mm; margin-top: 0;">
+                <p style="font-size: 14pt; font-weight: 300; margin-bottom: 3mm;">Data In, Decisions Out</p>
+                <p style="font-size: 11pt; margin: 0; opacity: 0.9;">We help SMEs turn messy data into clear revenue actions.</p>
+            </div>
+            
+            <div class="contact-card">
+                <div class="contact-name">Olga Sakka</div>
+                <div class="contact-details">olga.sakka@congs.co.uk | www.congs.co.uk</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="page-footer">
+        <span>CONGs | Customer Segmentation Case Study</span>
+        <span>Page 8</span>
+    </div>
+</div>
+
+</body>
+</html>
+
